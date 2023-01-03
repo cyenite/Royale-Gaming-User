@@ -7,6 +7,7 @@ import 'package:app_tournament/ui/theme/buttons/buttons.dart';
 import 'package:app_tournament/ui/theme/text.dart';
 import 'package:app_tournament/ui/theme/theme_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:intl/intl.dart';
@@ -354,6 +355,27 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
                                                     colorScheme:
                                                         darkModeProvider.isDarkTheme ? CustomTabsColorScheme.dark : CustomTabsColorScheme.light,
                                                     toolbarColor: darkModeProvider.isDarkTheme ? DesignColor.blackFront : Colors.white,
+                                                    shareState: CustomTabsShareState.off,
+                                                    instantAppsEnabled: false,
+                                                    showTitle: true,
+                                                    urlBarHidingEnabled: true,
+                                                  ),
+                                                  safariVCOptions: const SafariViewControllerOptions(
+                                                    barCollapsingEnabled: true,
+                                                    dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+                                                    modalPresentationCapturesStatusBarAppearance: true,
+                                                  ),
+                                                );
+                                              } else if (streamOngoing.streamLink != '') {
+                                                if (kDebugMode) {
+                                                  print('spectating... ${streamOngoing.streamLink}');
+                                                }
+                                                await FlutterWebBrowser.openWebPage(
+                                                  url: streamOngoing.streamLink,
+                                                  customTabsOptions: CustomTabsOptions(
+                                                    colorScheme:
+                                                        darkModeProvider.isDarkTheme ? CustomTabsColorScheme.dark : CustomTabsColorScheme.light,
+                                                    toolbarColor: darkModeProvider.isDarkTheme ? DesignColor.blackAppbar : Colors.white,
                                                     shareState: CustomTabsShareState.off,
                                                     instantAppsEnabled: false,
                                                     showTitle: true,

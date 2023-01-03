@@ -55,6 +55,7 @@ Tournaments _$TournamentsFromJson(Map<String, dynamic> json) => Tournaments(
       fee: json['fee'] as int? ?? 0,
       roomId: json['roomId'] as String? ?? '',
       link: json['roomLink'] as String? ?? '',
+      streamLink: json['streamLink'] as String? ?? '',
       roomPassword: json['roomPassword'] as String? ?? '',
       maxPlayers: json['maxPlayers'] as int? ?? 0,
       joinedPlayersCount: json['joinedPlayersCount'] as int? ?? 0,

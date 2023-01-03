@@ -15,6 +15,7 @@ import 'package:app_tournament/ui/widgets/progress_circle.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -363,8 +364,27 @@ class _StartPageState extends State<StartPage> {
                                   modalPresentationCapturesStatusBarAppearance: true,
                                 ),
                               );
+                            } else if (tournamentsStream.streamLink != '') {
+                              if (kDebugMode) {
+                                print('spectating... ${tournamentsStream.streamLink}');
+                              }
+                              await FlutterWebBrowser.openWebPage(
+                                url: tournamentsStream.streamLink,
+                                customTabsOptions: CustomTabsOptions(
+                                  colorScheme: widget.darkModeProvider.isDarkTheme ? CustomTabsColorScheme.dark : CustomTabsColorScheme.light,
+                                  toolbarColor: widget.darkModeProvider.isDarkTheme ? DesignColor.blackAppbar : Colors.white,
+                                  shareState: CustomTabsShareState.off,
+                                  instantAppsEnabled: false,
+                                  showTitle: true,
+                                  urlBarHidingEnabled: true,
+                                ),
+                                safariVCOptions: const SafariViewControllerOptions(
+                                  barCollapsingEnabled: true,
+                                  dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+                                  modalPresentationCapturesStatusBarAppearance: true,
+                                ),
+                              );
                             }
-                            checkJoined ? null : Fluttertoast.showToast(msg: "Stream not set", toastLength: Toast.LENGTH_SHORT);
                           } else {
                             final FirebaseFirestore _db = FirebaseFirestore.instance;
                             final DocumentReference ref1 = _db.collection('alltournaments').doc(widget.tournamentsView.tId);

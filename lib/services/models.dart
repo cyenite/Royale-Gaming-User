@@ -45,6 +45,7 @@ class Tournaments {
   int fee;
   String roomId;
   String link;
+  String streamLink;
   String roomPassword;
   int maxPlayers;
   int joinedPlayersCount;
@@ -62,6 +63,7 @@ class Tournaments {
     this.teamType = '',
     this.mapType = '',
     this.link = '',
+    this.streamLink = '',
     this.gamePlayTime = '0000-00-00 00:00:00.000',
     this.aboutTournament = '',
     this.tournamentSingleRewards = 0,

@@ -260,6 +260,24 @@ class _OngoingGameplayState extends State<OngoingGameplay> {
                                             modalPresentationCapturesStatusBarAppearance: true,
                                           ),
                                         );
+                                      } else if (streamOngoing.streamLink != '') {
+                                        print('spectating... ${streamOngoing.streamLink}');
+                                        await FlutterWebBrowser.openWebPage(
+                                          url: streamOngoing.streamLink,
+                                          customTabsOptions: CustomTabsOptions(
+                                            colorScheme: darkModeProvider.isDarkTheme ? CustomTabsColorScheme.dark : CustomTabsColorScheme.light,
+                                            toolbarColor: darkModeProvider.isDarkTheme ? DesignColor.blackAppbar : Colors.white,
+                                            shareState: CustomTabsShareState.off,
+                                            instantAppsEnabled: false,
+                                            showTitle: true,
+                                            urlBarHidingEnabled: true,
+                                          ),
+                                          safariVCOptions: const SafariViewControllerOptions(
+                                            barCollapsingEnabled: true,
+                                            dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+                                            modalPresentationCapturesStatusBarAppearance: true,
+                                          ),
+                                        );
                                       }
                                     },
                                     textLabel: checkJoined ? 'Play Now' : 'Spectate',
