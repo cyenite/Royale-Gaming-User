@@ -35,7 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _otp = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final DarkModeProvider darkModeProvider = Provider.of<DarkModeProvider>(context);
+    final DarkModeProvider darkModeProvider =
+        Provider.of<DarkModeProvider>(context);
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(20),
@@ -47,7 +48,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 showCountryPicker(
                   context: context,
                   showPhoneCode: true,
-                  countryListTheme: CountryListThemeData(borderRadius: BorderRadius.circular(6)),
+                  countryListTheme: CountryListThemeData(
+                      borderRadius: BorderRadius.circular(6)),
                   onSelect: (Country country) {
                     setState(() {
                       phoneCountry = country.phoneCode;
@@ -61,10 +63,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    DesignText(countryDetails.name == 'World Wide' ? defaultCountryFlag : countryDetails.flagEmoji),
+                    DesignText(countryDetails.name == 'World Wide'
+                        ? defaultCountryFlag
+                        : countryDetails.flagEmoji),
                     const SizedBox(width: 4),
                     DesignText(
-                      countryDetails.name == 'World Wide' ? defaultCountryName : countryDetails.name,
+                      countryDetails.name == 'World Wide'
+                          ? defaultCountryName
+                          : countryDetails.name,
                       color: darkModeProvider.isDarkTheme ? Colors.white : null,
                     ),
                   ],
@@ -131,7 +137,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderSide: BorderSide(color: Colors.purple, width: 2.0),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.0),
+                  borderSide: BorderSide(
+                      color: Colors.grey.withOpacity(0.5), width: 1.0),
                 ),
               ),
               keyboardType: TextInputType.number,
@@ -154,14 +161,27 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderSide: BorderSide(color: Colors.purple, width: 2.0),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.0),
+                  borderSide: BorderSide(
+                      color: Colors.grey.withOpacity(0.5), width: 1.0),
                 ),
               ),
               keyboardType: TextInputType.name,
             ),
             // Please Remove or Comment if you don't want google Sign-in and Skip Sign-in
             // Start remove ---
-            const SizedBox(height: 6),
+            const SizedBox(height: 12),
+
+            //  Adding "OR" text for UI/UX
+            isPhoneSignin
+                ? Container()
+                : DesignText.bold1(
+                    AppInformation().orText,
+                    textAlign: TextAlign.center,
+                    fontSize: 18,
+                    color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                    fontWeight: 600,
+                  ),
+            const SizedBox(height: 12),
             !isPhoneSignin
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -201,22 +221,30 @@ class _LoginScreenState extends State<LoginScreen> {
                           loginMethod: () async {
                             await FirebaseAuth.instance.verifyPhoneNumber(
                               phoneNumber: "+$phoneCountry${_phoneNumber.text}",
-                              verificationCompleted: (PhoneAuthCredential credential) {},
+                              verificationCompleted:
+                                  (PhoneAuthCredential credential) {},
                               verificationFailed: (FirebaseAuthException e) {},
-                              codeSent: (String verificationId, int? resendToken) {
+                              codeSent:
+                                  (String verificationId, int? resendToken) {
                                 setState(() {
                                   verificationCodeID = verificationId;
                                 });
                               },
-                              codeAutoRetrievalTimeout: (String verificationId) {},
+                              codeAutoRetrievalTimeout:
+                                  (String verificationId) {},
                             );
 
                             showModalBottomSheet(
-                                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(6))),
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(6))),
                                 context: context,
                                 builder: (context) {
                                   return Padding(
-                                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                    padding: EdgeInsets.only(
+                                        bottom: MediaQuery.of(context)
+                                            .viewInsets
+                                            .bottom),
                                     child: SizedBox(
                                       height: 170,
                                       child: Padding(
@@ -229,26 +257,46 @@ class _LoginScreenState extends State<LoginScreen> {
                                               decoration: const InputDecoration(
                                                 labelText: 'OTP',
                                                 filled: true,
-                                                floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                                contentPadding: EdgeInsets.all(16),
-                                                focusedBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                                floatingLabelBehavior:
+                                                    FloatingLabelBehavior.auto,
+                                                contentPadding:
+                                                    EdgeInsets.all(16),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.blue,
+                                                      width: 2.0),
                                                 ),
-                                                enabledBorder: OutlineInputBorder(
-                                                  borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.blue,
+                                                      width: 1.0),
                                                 ),
                                               ),
-                                              keyboardType: TextInputType.number,
+                                              keyboardType:
+                                                  TextInputType.number,
                                             ),
                                             const SizedBox(height: 20),
                                             DesignButtons.icon(
-                                              icon: const Icon(Ionicons.phone_portrait_outline),
+                                              icon: const Icon(Ionicons
+                                                  .phone_portrait_outline),
                                               textLabel: 'Submit',
                                               onPressed: () {
-                                                FirestoreService().phoneAuthProvider(_otp.text, verificationCodeID!, _referee.text);
+                                                FirestoreService()
+                                                    .phoneAuthProvider(
+                                                        _otp.text,
+                                                        verificationCodeID ==
+                                                                null
+                                                            ? ''
+                                                            : verificationCodeID!,
+                                                        _referee.text);
                                                 Navigator.pop(context);
                                               },
-                                              colorText: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                              colorText:
+                                                  darkModeProvider.isDarkTheme
+                                                      ? Colors.white
+                                                      : null,
                                             )
                                           ],
                                         ),
