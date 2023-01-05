@@ -173,6 +173,23 @@ class FirestoreService {
     return ref.set(data, SetOptions(merge: true));
   }
 
+  /// Pay referral bonus to referee
+  Future<void> payReferee(
+    int amount,
+    String referee,
+  ) {
+    var data = {
+      'coins': FieldValue.increment(amount),
+    };
+    var ref = _db.collection('usersdata').where('name', isEqualTo: referee).get();
+    ref.then((value) {
+      if (value.docs.isNotEmpty) {
+        return value.docs.first.reference.set(data, SetOptions(merge: true));
+      }
+    });
+    return Future(() => null);
+  }
+
   /// Updates the current user's report document after completing
   Future<void> updateJoining(Tournaments tournaments, String playerID) async {
     var user = AuthService().user!;
@@ -212,7 +229,7 @@ class FirestoreService {
     );
   }
 
-  void phoneAuthProvider(String otp, String verificationId) async {
+  void phoneAuthProvider(String otp, String verificationId, String referee) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     String smsCode = otp;
     PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
@@ -222,11 +239,13 @@ class FirestoreService {
     DocumentSnapshot snap = await ref.get();
     var data = {
       'totalsignin': FieldValue.increment(1),
-      'name': 'Update Your Name',
+      'name': 'Update Your Username',
       'profile': AppInformation().userProfile,
       'email': user.phoneNumber,
       'isDark': false,
       'coins': FieldValue.increment(0),
+      'referee': referee,
+      'referralComplete': false,
       'transaction': FieldValue.arrayUnion([
         {
           'coinsTransaction': 0,

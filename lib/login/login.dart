@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app_tournament/config/app_information.dart';
 import 'package:app_tournament/login/login_widget.dart';
 import 'package:app_tournament/services/auth.dart';
@@ -29,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isPhoneSignin = false;
   String? verificationCodeID;
   final TextEditingController _phoneNumber = TextEditingController();
+  final TextEditingController _referee = TextEditingController();
   final TextEditingController _otp = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -133,6 +136,29 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               keyboardType: TextInputType.number,
             ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _referee,
+              style: GoogleFonts.nunito(
+                textStyle: const TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+              decoration: InputDecoration(
+                labelText: 'Referee username(optional)',
+                filled: true,
+                fillColor: Colors.transparent,
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                contentPadding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.purple, width: 2.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.0),
+                ),
+              ),
+              keyboardType: TextInputType.name,
+            ),
             // Please Remove or Comment if you don't want google Sign-in and Skip Sign-in
             // Start remove ---
             const SizedBox(height: 6),
@@ -219,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                               icon: const Icon(Ionicons.phone_portrait_outline),
                                               textLabel: 'Submit',
                                               onPressed: () {
-                                                FirestoreService().phoneAuthProvider(_otp.text, verificationCodeID!);
+                                                FirestoreService().phoneAuthProvider(_otp.text, verificationCodeID!, _referee.text);
                                                 Navigator.pop(context);
                                               },
                                               colorText: darkModeProvider.isDarkTheme ? Colors.white : null,

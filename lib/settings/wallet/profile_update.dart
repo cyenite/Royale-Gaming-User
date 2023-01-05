@@ -9,7 +9,6 @@ import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
@@ -77,12 +76,18 @@ class _ProfileUpdateState extends State<ProfileUpdate> with WidgetsBindingObserv
               ),
         appBar: AppBar(
           elevation: 0.6,
-          automaticallyImplyLeading: false,
-          title: Center(
-            child: DesignText(
-              "Update Profile",
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.arrow_back,
               color: darkModeProvider.isDarkTheme ? Colors.white : null,
             ),
+          ),
+          title: DesignText(
+            "Update Profile",
+            color: darkModeProvider.isDarkTheme ? Colors.white : null,
           ),
         ),
         body: Padding(
@@ -98,11 +103,11 @@ class _ProfileUpdateState extends State<ProfileUpdate> with WidgetsBindingObserv
                 keyboardType: TextInputType.text,
                 onChanged: (value) {
                   if (_userName.text != value.toUpperCase()) {
-                    _userName.value = _userName.value.copyWith(text: value.toUpperCase());
+                    _userName.value = _userName.value.copyWith(text: value);
                   }
                 },
                 decoration: const InputDecoration(
-                  labelText: "Full Name",
+                  labelText: "Username",
                   filled: true,
                   floatingLabelBehavior: FloatingLabelBehavior.auto,
                   contentPadding: EdgeInsets.all(16),
@@ -132,6 +137,12 @@ class _ProfileUpdateState extends State<ProfileUpdate> with WidgetsBindingObserv
                   ),
                 ),
               ),
+              const SizedBox(height: 6),
+              DesignText.bold2(
+                'Paste your avatar link or choose any of the following defaults.',
+                color: darkModeProvider.isDarkTheme ? Colors.white : null,
+              ),
+              const SizedBox(height: 6),
               Row(
                 children: [
                   Expanded(
@@ -150,7 +161,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> with WidgetsBindingObserv
                             setState(() {
                               _profile.text = AppInformation.profile1;
                             });
-                          }).whenComplete(() => Fluttertoast.showToast(msg: "Animate Added", toastLength: Toast.LENGTH_LONG));
+                          });
                         },
                         textLabel: 'Animate',
                         icon: const Icon(
@@ -176,7 +187,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> with WidgetsBindingObserv
                             setState(() {
                               _profile.text = AppInformation.profile2;
                             });
-                          }).whenComplete(() => Fluttertoast.showToast(msg: "Butterfly", toastLength: Toast.LENGTH_LONG));
+                          });
                         },
                         textLabel: 'Butterfly',
                         icon: const Icon(
@@ -200,7 +211,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> with WidgetsBindingObserv
                             setState(() {
                               _profile.text = AppInformation.profile3;
                             });
-                          }).whenComplete(() => Fluttertoast.showToast(msg: "Simple Added", toastLength: Toast.LENGTH_LONG));
+                          });
                         },
                         textLabel: 'Simple',
                         icon: const Icon(
@@ -246,16 +257,28 @@ class _ProfileUpdateState extends State<ProfileUpdate> with WidgetsBindingObserv
         loading = true;
       });
 
-      final User user = AuthService().user!;
-      _db
-          .collection('usersdata')
-          .doc(user.uid)
-          .set({'name': _userName.text, 'profile': _profile.text}, SetOptions(merge: true)).whenComplete(() => Navigator.pop(context));
-      await Future.delayed(const Duration(milliseconds: 1000));
-      setState(() {
-        loading = false;
+      final usernameData = _db.collection('usersdata').where('name', isEqualTo: _userName.text).get();
+
+      usernameData.then((value) async {
+        if (value.docs.isEmpty) {
+          final User user = AuthService().user!;
+          _db
+              .collection('usersdata')
+              .doc(user.uid)
+              .set({'name': _userName.text, 'profile': _profile.text}, SetOptions(merge: true)).whenComplete(() => Navigator.pop(context));
+          await Future.delayed(const Duration(milliseconds: 1000));
+          setState(() {
+            loading = false;
+          });
+          successSnackbar();
+        } else {
+          userNameUnavailableSnackbar();
+          await Future.delayed(const Duration(milliseconds: 1000));
+          setState(() {
+            loading = false;
+          });
+        }
       });
-      successSnackbar();
     }
   }
 
@@ -268,6 +291,20 @@ class _ProfileUpdateState extends State<ProfileUpdate> with WidgetsBindingObserv
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.blue[700],
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+  void userNameUnavailableSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 5),
+        content: const Text(
+          "Username is taken. Try another username",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.red[700],
         behavior: SnackBarBehavior.floating,
       ),
     );

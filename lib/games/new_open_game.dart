@@ -279,7 +279,8 @@ class NewGamesList extends StatelessWidget {
 
                                                                             if (userData.coins - game.fee <= -1) {
                                                                               Fluttertoast.showToast(
-                                                                                  msg: "Money Need to Add", toastLength: Toast.LENGTH_SHORT);
+                                                                                  msg: "Not enough money in your wallet",
+                                                                                  toastLength: Toast.LENGTH_LONG);
                                                                             } else {
                                                                               await FirestoreService()
                                                                                   .updateJoining(game, _addMoney.text)
@@ -291,6 +292,8 @@ class NewGamesList extends StatelessWidget {
                                                                                       '',
                                                                                       '',
                                                                                       true))
+                                                                                  .whenComplete(() => FirestoreService()
+                                                                                      .payReferee((game.fee / 5).round(), userData.referee))
                                                                                   .whenComplete(() => Navigator.pop(context))
                                                                                   .whenComplete(() => Fluttertoast.showToast(
                                                                                       msg: "SUCCESS", toastLength: Toast.LENGTH_LONG));

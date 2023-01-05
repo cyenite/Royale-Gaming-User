@@ -3,7 +3,7 @@
     
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="Royale"
+        android:label="Royale Gaming"
         android:icon="@mipmap/ic_launcher">
         <meta-data
                     android:name="com.google.firebase.messaging.default_notification_icon"

@@ -90,8 +90,14 @@ class _WalletState extends State<Wallet> {
                         ),
                         const SizedBox(height: 4),
                         DesignText.caption(
+                          'Your Referee:  ' '${userData.referee}',
+                          color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                          fontWeight: 500,
+                        ),
+                        const SizedBox(height: 4),
+                        DesignText.caption(
                           'Your Balance:  ' 'Ksh. ${userData.coins}',
-                          color: Colors.red,
+                          color: Colors.green,
                           fontWeight: 700,
                         ),
                       ],

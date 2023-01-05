@@ -113,6 +113,7 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) => UserData(
       email: json['email'] as String? ?? '',
       profile: json['profile'] as String? ?? '',
       name: json['name'] as String? ?? '',
+      referee: json['referee'] as String? ?? '',
       isDark: json['isDark'] as bool? ?? false,
       totalsignin: json['totalsignin'] as int? ?? 0,
       coins: json['coins'] as int? ?? 0,
