@@ -30,7 +30,8 @@ class _TransactionsState extends State<Transactions> {
       });
     }
 
-    final DarkModeProvider darkModeProvider = Provider.of<DarkModeProvider>(context);
+    final DarkModeProvider darkModeProvider =
+        Provider.of<DarkModeProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -77,7 +78,8 @@ class _TransactionsState extends State<Transactions> {
             } else if (snapshot.hasData) {
               final List<UserData> streamOngoing = snapshot.data!;
               return ListView(
-                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics()),
                 primary: false,
                 padding: const EdgeInsets.all(6.0),
                 children: streamOngoing.map((streamOngoing) {
@@ -103,30 +105,41 @@ class _TransactionsState extends State<Transactions> {
                                 ),
                                 Padding(
                                   padding: EdgeInsets.all(14),
-                                  child: DesignText('Purpose', color: Colors.white),
+                                  child: DesignText('Purpose',
+                                      color: Colors.white),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.all(14),
-                                  child: DesignText('Date', color: Colors.white),
+                                  child:
+                                      DesignText('Date', color: Colors.white),
                                 ),
                               ],
                             ),
                           ),
                           Column(
                             verticalDirection: VerticalDirection.up,
-                            children: streamOngoing.transaction.map((userTransactions) {
-                              final String dateTime = DateFormat.yMMMd().add_jm().format(DateTime.parse(userTransactions.date));
+                            children: streamOngoing.transaction
+                                .map((userTransactions) {
+                              final String dateTime = DateFormat.yMMMd()
+                                  .add_jm()
+                                  .format(
+                                      DateTime.parse(userTransactions.date));
                               return Container(
-                                color: userTransactions.coinsTransaction.isNegative ? Colors.lightGreen : Colors.lightBlue,
+                                color:
+                                    userTransactions.coinsTransaction.isNegative
+                                        ? Colors.lightGreen
+                                        : Colors.lightBlue,
                                 child: Row(
                                   // crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: DesignText(
-                                          userTransactions.coinsTransaction.toString(),
+                                          userTransactions.coinsTransaction
+                                              .toString(),
                                           color: Colors.white,
                                         ),
                                       ),
@@ -138,12 +151,23 @@ class _TransactionsState extends State<Transactions> {
                                               context: context,
                                               builder: (context) {
                                                 return Dialog(
-                                                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                                                  shape:
+                                                      const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          8.0))),
                                                   child: Padding(
-                                                    padding: const EdgeInsets.all(8.0),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: DesignText(
                                                       userTransactions.purpose,
-                                                      color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                                      color: darkModeProvider
+                                                              .isDarkTheme
+                                                          ? Colors.white
+                                                          : null,
                                                     ),
                                                   ),
                                                 );
@@ -153,10 +177,22 @@ class _TransactionsState extends State<Transactions> {
                                           padding: const EdgeInsets.all(8.0),
                                           child: Column(
                                             children: [
-                                              DesignText.bold2(userTransactions.purpose.length >= 20 ? 'Click to view' : userTransactions.purpose,
+                                              DesignText.bold2(
+                                                  userTransactions
+                                                              .purpose.length >=
+                                                          20
+                                                      ? 'Click to view'
+                                                      : userTransactions
+                                                          .purpose,
                                                   color: Colors.white),
-                                              userTransactions.purpose == 'Withdraw'
-                                                  ? DesignText.bold2(userTransactions.pendingStatus ? 'Success' : 'Pending', color: Colors.white)
+                                              userTransactions.purpose ==
+                                                      'Withdraw'
+                                                  ? DesignText.bold2(
+                                                      userTransactions
+                                                              .pendingStatus
+                                                          ? 'Success'
+                                                          : 'Pending',
+                                                      color: Colors.white)
                                                   : Container()
                                             ],
                                           ),
@@ -166,7 +202,8 @@ class _TransactionsState extends State<Transactions> {
                                     Expanded(
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: DesignText(dateTime, color: Colors.white),
+                                        child: DesignText(dateTime,
+                                            color: Colors.white),
                                       ),
                                     ),
                                   ],
