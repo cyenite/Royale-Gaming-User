@@ -90,14 +90,17 @@ class _WalletState extends State<Wallet> {
                           color: darkModeProvider.isDarkTheme ? Colors.white : null,
                         ),
                         const SizedBox(height: 4),
-                        DesignText.caption(
-                          'Your Referee:  ' '${userData.referee}',
-                          color: darkModeProvider.isDarkTheme ? Colors.white : null,
-                          fontWeight: 500,
+                        Visibility(
+                          visible: userData.referee != '',
+                          child: DesignText.caption(
+                            'Your Referee:  ' '${userData.referee}',
+                            color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                            fontWeight: 500,
+                          ),
                         ),
                         const SizedBox(height: 4),
                         DesignText.caption(
-                          'Your Balance:  ' 'Ksh. ${userData.coins}',
+                          'Your Balance:  ' 'Ksh. ${userData.coins + userData.coinsWon}',
                           color: Colors.green,
                           fontWeight: 700,
                         ),

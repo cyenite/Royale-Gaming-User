@@ -57,7 +57,8 @@ class _ReferralsPageState extends State<ReferralsPage> {
         onRefresh: () async {
           await retry();
         },
-        child: FutureBuilder<List<UserData>>(
+        child: const Center(child: Text('COMING SOON'),),
+        /*child: FutureBuilder<List<UserData>>(
             future: FirestoreService().getReferrals(widget.username),
             builder: (context, snapshot) {
               if (!snapshot.hasData || data == false) {
@@ -144,7 +145,7 @@ class _ReferralsPageState extends State<ReferralsPage> {
                 return const Text('Not Found');
               }
             }),
-      ),
+      */),
     );
   }
 }

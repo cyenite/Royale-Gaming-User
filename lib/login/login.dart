@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
-            TextField(
+            /*TextField(
               controller: _phoneNumber,
               onChanged: (f) {
                 setState(() {
@@ -135,30 +135,30 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _referee,
-              style: GoogleFonts.nunito(
-                textStyle: const TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-              decoration: InputDecoration(
-                labelText: 'Referee username(optional)',
-                filled: true,
-                fillColor: Colors.transparent,
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                contentPadding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
-                focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.purple, width: 2.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.0),
-                ),
-              ),
-              keyboardType: TextInputType.name,
-            ),
+            ),*/
+            // const SizedBox(height: 10),
+            // TextField(
+            //   controller: _referee,
+            //   style: GoogleFonts.nunito(
+            //     textStyle: const TextStyle(
+            //       fontSize: 20.0,
+            //     ),
+            //   ),
+            //   decoration: InputDecoration(
+            //     labelText: 'Referee username(optional)',
+            //     filled: true,
+            //     fillColor: Colors.transparent,
+            //     floatingLabelBehavior: FloatingLabelBehavior.never,
+            //     contentPadding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+            //     focusedBorder: const OutlineInputBorder(
+            //       borderSide: BorderSide(color: Colors.purple, width: 2.0),
+            //     ),
+            //     enabledBorder: OutlineInputBorder(
+            //       borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.0),
+            //     ),
+            //   ),
+            //   keyboardType: TextInputType.name,
+            // ),
             // Please Remove or Comment if you don't want google Sign-in and Skip Sign-in
             // Start remove ---
             const SizedBox(height: 6),
@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           topRight: 0,
                           text: 'Sign In',
                           icon: Ionicons.logo_google,
-                          color: const Color.fromARGB(255, 225, 105, 6),
+                          color: Color.fromARGB(255, 225, 72, 6),
                           loginMethod: AuthService().googleLogin,
                         ),
                       ),
@@ -183,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           icon: Ionicons.id_card,
                           text: 'Skip',
                           loginMethod: AuthService().anonLogin,
-                          color: const Color.fromARGB(255, 0, 213, 11),
+                          color: Color.fromARGB(255, 0, 35, 213),
                         ),
                       ),
                     ],
