@@ -40,7 +40,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Column(
         children: [
           DesignContainer(
-            color: userData.isDark ? DesignColor.blackFront : const Color(0xffffffff),
+            color: userData.isDark
+                ? DesignColor.blackFront
+                : const Color(0xffffffff),
             margin: const EdgeInsets.fromLTRB(10, 4, 10, 0),
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -53,18 +55,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       margin: const EdgeInsets.only(right: 8),
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       child: CachedNetworkImage(
-                          height: 64, imageUrl: user!.isAnonymous ? AppInformation().userProfile : user.photoURL.toString(), fit: BoxFit.cover),
+                          height: 64,
+                          imageUrl: user!.isAnonymous
+                              ? AppInformation().userProfile
+                              : user.photoURL.toString(),
+                          fit: BoxFit.cover),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         DesignText.bold1(
-                          user.isAnonymous ? "Welcome to -" : user.displayName.toString(),
+                          user.isAnonymous
+                              ? "Welcome to -"
+                              : user.displayName.toString(),
                           fontWeight: 700,
                         ),
                         const SizedBox(height: 4),
                         DesignText.caption(
-                          user.isAnonymous ? AppInformation().appMainTitle : user.email.toString(),
+                          user.isAnonymous
+                              ? AppInformation().appMainTitle
+                              : user.email.toString(),
                           xMuted: true,
                           fontWeight: 600,
                         ),
@@ -82,7 +92,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           DesignContainer(
-            color: userData.isDark ? DesignColor.blackFront : const Color(0xffffffff),
+            color: userData.isDark
+                ? DesignColor.blackFront
+                : const Color(0xffffffff),
             margin: const EdgeInsets.fromLTRB(10, 4, 10, 0),
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -150,17 +162,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         textLabel: 'Logout',
                         onPressed: () async {
                           await AuthService().signOut();
-                          Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+                          Navigator.of(context)
+                              .pushNamedAndRemoveUntil('/', (route) => false);
                         },
                       ),
                       DesignButtons.icon(
                         icon: const Icon(FontAwesomeIcons.eraser),
                         textLabel: 'Delete Your Data',
                         onPressed: () async {
-                          var collection = FirebaseFirestore.instance.collection('reports');
+                          var collection =
+                              FirebaseFirestore.instance.collection('reports');
                           await collection.doc(user.uid).delete();
                           await AuthService().signOut();
-                          Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+                          Navigator.of(context)
+                              .pushNamedAndRemoveUntil('/', (route) => false);
                         },
                       ),
                     ],

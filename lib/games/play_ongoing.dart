@@ -31,7 +31,8 @@ class OngoingGameplay extends StatefulWidget {
 class _OngoingGameplayState extends State<OngoingGameplay> {
   @override
   Widget build(BuildContext context) {
-    final DarkModeProvider darkModeProvider = Provider.of<DarkModeProvider>(context);
+    final DarkModeProvider darkModeProvider =
+        Provider.of<DarkModeProvider>(context);
 
     ConnectionState refreshIndicator = ConnectionState.waiting;
     Future retry() async {
@@ -41,7 +42,10 @@ class _OngoingGameplayState extends State<OngoingGameplay> {
     }
 
     return Scaffold(
-      appBar: AppBar(elevation: 2, title: TextGradient(text: AppInformation().onGoingGameplay, appbarfontsize: 24)),
+      appBar: AppBar(
+          elevation: 2,
+          title: TextGradient(
+              text: AppInformation().onGoingGameplay, appbarfontsize: 24)),
       body: RefreshIndicator(
         strokeWidth: 1.5,
         onRefresh: () async {
@@ -74,7 +78,8 @@ class _OngoingGameplayState extends State<OngoingGameplay> {
                     children: [
                       NotFoundAnimation(
                         text: 'No ongoing tournaments',
-                        color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                        color:
+                            darkModeProvider.isDarkTheme ? Colors.white : null,
                       ),
                       const SizedBox(height: 30),
                       DesignButtons.icon(
@@ -82,7 +87,8 @@ class _OngoingGameplayState extends State<OngoingGameplay> {
                           await retry();
                         },
                         textLabel: 'Retry ',
-                        colorText: darkModeProvider.isDarkTheme ? Colors.white : null,
+                        colorText:
+                            darkModeProvider.isDarkTheme ? Colors.white : null,
                         icon: const Icon(Ionicons.refresh_circle_outline),
                       ),
                       const SizedBox(height: 30)
@@ -100,14 +106,17 @@ class _OngoingGameplayState extends State<OngoingGameplay> {
             } else if (snapshot.hasData) {
               List<Tournaments> streamOngoing = snapshot.data!;
               return ListView(
-                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics()),
                 primary: false,
                 padding: const EdgeInsets.all(6.0),
                 children: streamOngoing.map((streamOngoing) {
                   final List uidContains = streamOngoing.joinedPlayers.map((e) {
                     return e.uid;
                   }).toList();
-                  final String timeConvert = DateFormat.yMMMd().add_jm().format(DateTime.parse(streamOngoing.gamePlayTime));
+                  final String timeConvert = DateFormat.yMMMd()
+                      .add_jm()
+                      .format(DateTime.parse(streamOngoing.gamePlayTime));
                   final user = AuthService().user!;
                   final bool checkJoined = uidContains.contains(user.uid);
 
@@ -125,7 +134,8 @@ class _OngoingGameplayState extends State<OngoingGameplay> {
                         tag: streamOngoing.image,
                         child: Card(
                           clipBehavior: Clip.antiAlias,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4)),
                           elevation: 2,
                           margin: const EdgeInsets.all(4),
                           child: Column(
@@ -160,21 +170,25 @@ class _OngoingGameplayState extends State<OngoingGameplay> {
                                         streamOngoing.title,
                                         fontSize: 15,
                                         fontWeight: 700,
-                                        color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                        color: darkModeProvider.isDarkTheme
+                                            ? Colors.white
+                                            : null,
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 4, right: 4),
+                                padding:
+                                    const EdgeInsets.only(left: 4, right: 4),
                                 child: Row(
                                   children: [
                                     Expanded(
                                       child: DesignButtons.icon(
                                           onPressed: () {},
                                           textLabel: streamOngoing.teamType,
-                                          color: const Color.fromARGB(255, 255, 212, 155),
+                                          color: const Color.fromARGB(
+                                              255, 255, 212, 155),
                                           icon: const Icon(
                                             Ionicons.game_controller_outline,
                                             size: 18,
@@ -185,7 +199,10 @@ class _OngoingGameplayState extends State<OngoingGameplay> {
                                       child: DesignButtons.icon(
                                           onPressed: () {},
                                           textLabel: streamOngoing.mapType,
-                                          colorText: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                          colorText:
+                                              darkModeProvider.isDarkTheme
+                                                  ? Colors.white
+                                                  : null,
                                           icon: const Icon(
                                             Ionicons.navigate_circle_outline,
                                             size: 18,
@@ -195,7 +212,8 @@ class _OngoingGameplayState extends State<OngoingGameplay> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 4, right: 4),
+                                padding:
+                                    const EdgeInsets.only(left: 4, right: 4),
                                 child: Table(
                                   border: TableBorder.all(
                                     color: Colors.black.withOpacity(0.1),
@@ -209,7 +227,9 @@ class _OngoingGameplayState extends State<OngoingGameplay> {
                                           textAlign: TextAlign.center,
                                           fontSize: 14,
                                           fontWeight: 700,
-                                          color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                          color: darkModeProvider.isDarkTheme
+                                              ? Colors.white
+                                              : null,
                                         ),
                                       ),
                                       Padding(
@@ -218,7 +238,9 @@ class _OngoingGameplayState extends State<OngoingGameplay> {
                                           'Winner: Ksh.${streamOngoing.tournamentWinRewards}',
                                           fontSize: 14,
                                           fontWeight: 700,
-                                          color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                          color: darkModeProvider.isDarkTheme
+                                              ? Colors.white
+                                              : null,
                                         ),
                                       ),
                                       Padding(
@@ -227,7 +249,9 @@ class _OngoingGameplayState extends State<OngoingGameplay> {
                                           'Per-kill: Ksh. ${streamOngoing.tournamentSingleRewards}',
                                           fontSize: 14,
                                           fontWeight: 700,
-                                          color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                          color: darkModeProvider.isDarkTheme
+                                              ? Colors.white
+                                              : null,
                                         ),
                                       )
                                     ]),
@@ -237,56 +261,88 @@ class _OngoingGameplayState extends State<OngoingGameplay> {
                               Row(
                                 children: [
                                   Flexible(
-                                    child: ProgressBar(maxPlayers: streamOngoing.maxPlayers, joinedPlayers: streamOngoing.joinedPlayersCount),
+                                    child: ProgressBar(
+                                        maxPlayers: streamOngoing.maxPlayers,
+                                        joinedPlayers:
+                                            streamOngoing.joinedPlayersCount),
                                   ),
                                   DesignButtons.customRadius(
                                     // elevated: true,
-                                    color: !checkJoined ? DesignColor.blueSmart : Colors.pinkAccent,
+                                    color: !checkJoined
+                                        ? DesignColor.blueSmart
+                                        : Colors.pinkAccent,
                                     onPressed: () async {
                                       if (checkJoined) {
                                         await FlutterWebBrowser.openWebPage(
                                           url: streamOngoing.link,
                                           customTabsOptions: CustomTabsOptions(
-                                            colorScheme: darkModeProvider.isDarkTheme ? CustomTabsColorScheme.dark : CustomTabsColorScheme.light,
-                                            toolbarColor: darkModeProvider.isDarkTheme ? DesignColor.blackAppbar : Colors.white,
-                                            shareState: CustomTabsShareState.off,
+                                            colorScheme: darkModeProvider
+                                                    .isDarkTheme
+                                                ? CustomTabsColorScheme.dark
+                                                : CustomTabsColorScheme.light,
+                                            toolbarColor:
+                                                darkModeProvider.isDarkTheme
+                                                    ? DesignColor.blackAppbar
+                                                    : Colors.white,
+                                            shareState:
+                                                CustomTabsShareState.off,
                                             instantAppsEnabled: false,
                                             showTitle: true,
                                             urlBarHidingEnabled: true,
                                           ),
-                                          safariVCOptions: const SafariViewControllerOptions(
+                                          safariVCOptions:
+                                              const SafariViewControllerOptions(
                                             barCollapsingEnabled: true,
-                                            dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
-                                            modalPresentationCapturesStatusBarAppearance: true,
+                                            dismissButtonStyle:
+                                                SafariViewControllerDismissButtonStyle
+                                                    .close,
+                                            modalPresentationCapturesStatusBarAppearance:
+                                                true,
                                           ),
                                         );
-                                      } else if (streamOngoing.streamLink != '') {
-                                        print('spectating... ${streamOngoing.streamLink}');
+                                      } else if (streamOngoing.streamLink !=
+                                          '') {
+                                        print(
+                                            'spectating... ${streamOngoing.streamLink}');
                                         await FlutterWebBrowser.openWebPage(
                                           url: streamOngoing.streamLink,
                                           customTabsOptions: CustomTabsOptions(
-                                            colorScheme: darkModeProvider.isDarkTheme ? CustomTabsColorScheme.dark : CustomTabsColorScheme.light,
-                                            toolbarColor: darkModeProvider.isDarkTheme ? DesignColor.blackAppbar : Colors.white,
-                                            shareState: CustomTabsShareState.off,
+                                            colorScheme: darkModeProvider
+                                                    .isDarkTheme
+                                                ? CustomTabsColorScheme.dark
+                                                : CustomTabsColorScheme.light,
+                                            toolbarColor:
+                                                darkModeProvider.isDarkTheme
+                                                    ? DesignColor.blackAppbar
+                                                    : Colors.white,
+                                            shareState:
+                                                CustomTabsShareState.off,
                                             instantAppsEnabled: false,
                                             showTitle: true,
                                             urlBarHidingEnabled: true,
                                           ),
-                                          safariVCOptions: const SafariViewControllerOptions(
+                                          safariVCOptions:
+                                              const SafariViewControllerOptions(
                                             barCollapsingEnabled: true,
-                                            dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
-                                            modalPresentationCapturesStatusBarAppearance: true,
+                                            dismissButtonStyle:
+                                                SafariViewControllerDismissButtonStyle
+                                                    .close,
+                                            modalPresentationCapturesStatusBarAppearance:
+                                                true,
                                           ),
                                         );
                                       }
                                     },
-                                    textLabel: checkJoined ? 'Play Now' : 'Spectate',
+                                    textLabel:
+                                        checkJoined ? 'Play Now' : 'Spectate',
                                     colorText: Colors.white,
                                     // bottomLeft: 0,
                                     // bottomRight: 0,
                                     // topLeft: 0,
                                     icon: Icon(
-                                      checkJoined ? Ionicons.play_circle_sharp : Ionicons.eye_outline,
+                                      checkJoined
+                                          ? Ionicons.play_circle_sharp
+                                          : Ionicons.eye_outline,
                                       color: Colors.white,
                                       size: 18,
                                     ),

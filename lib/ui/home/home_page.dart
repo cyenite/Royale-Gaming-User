@@ -26,7 +26,8 @@ class _MyHomePageState extends State<HomePageController> {
   // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   void registerNotification() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      debugPrint("Handling a background message: ${message.notification!.title}");
+      debugPrint(
+          "Handling a background message: ${message.notification!.title}");
       String title = message.notification!.title ?? "";
       String msg = message.notification!.body ?? "";
       // showSnackbar(title, msg);
@@ -195,7 +196,8 @@ class _MyHomePageState extends State<HomePageController> {
   Widget _buildBottomBar() {
     final themeProvider = Provider.of<DarkModeProvider>(context);
     return CustomBottomBar(
-      backgroundColor: themeProvider.isDarkTheme ? DesignColor.blackFront : null,
+      backgroundColor:
+          themeProvider.isDarkTheme ? DesignColor.blackFront : null,
       bottomColor: themeProvider.isDarkTheme ? DesignColor.blackFront : null,
       containerHeight: 60,
       selectedIndex: _currentIndex,
@@ -204,9 +206,14 @@ class _MyHomePageState extends State<HomePageController> {
       curve: Curves.easeInOutBack,
       onItemSelected: (index) => setState(() => _currentIndex = index),
       items: <BottomBarItem>[
-        BottomBarItem(icon: Icon(_currentIndex == 0 ? Ionicons.game_controller : Ionicons.game_controller_outline), title: const Text('Play')),
         BottomBarItem(
-          icon: Icon(_currentIndex == 1 ? Ionicons.wallet : Ionicons.wallet_outline),
+            icon: Icon(_currentIndex == 0
+                ? Ionicons.game_controller
+                : Ionicons.game_controller_outline),
+            title: const Text('Play')),
+        BottomBarItem(
+          icon: Icon(
+              _currentIndex == 1 ? Ionicons.wallet : Ionicons.wallet_outline),
           title: const Text('Wallet'),
           activeColor: Colors.purpleAccent,
         ),

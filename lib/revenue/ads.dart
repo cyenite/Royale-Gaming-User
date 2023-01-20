@@ -32,7 +32,7 @@
 //     ),
 //     orientation: AppOpenAd.orientationPortrait,
 //   );
-// } 
+// }
 // void loadInterstitialAd() {
 //   InterstitialAd.load(
 //       adUnitId: Platform.isAndroid
@@ -75,7 +75,7 @@
 //       ad.dispose();
 //       loadInterstitialAd();
 //     },
-//   ); 
+//   );
 //   _interstitialAd!.show();
 //   _interstitialAd = null;
 // }

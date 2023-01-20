@@ -1,11 +1,6 @@
-import 'package:app_tournament/services/firestore.dart';
-import 'package:app_tournament/services/models.dart';
 import 'package:app_tournament/ui/gradient/text_gradient.dart';
-import 'package:app_tournament/ui/theme/text.dart';
 import 'package:app_tournament/ui/theme/theme_provider.dart';
-import 'package:app_tournament/ui/widgets/animate_shimmer.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class ReferralsPage extends StatefulWidget {
@@ -41,7 +36,8 @@ class _ReferralsPageState extends State<ReferralsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final DarkModeProvider darkModeProvider = Provider.of<DarkModeProvider>(context);
+    final DarkModeProvider darkModeProvider =
+        Provider.of<DarkModeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         // backgroundColor: Colors.blueAccent,
@@ -57,7 +53,9 @@ class _ReferralsPageState extends State<ReferralsPage> {
         onRefresh: () async {
           await retry();
         },
-        child: const Center(child: Text('COMING SOON'),),
+        child: const Center(
+          child: Text('COMING SOON'),
+        ),
         /*child: FutureBuilder<List<UserData>>(
             future: FirestoreService().getReferrals(widget.username),
             builder: (context, snapshot) {
@@ -145,7 +143,8 @@ class _ReferralsPageState extends State<ReferralsPage> {
                 return const Text('Not Found');
               }
             }),
-      */),
+      */
+      ),
     );
   }
 }

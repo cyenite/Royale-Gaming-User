@@ -12,17 +12,18 @@ import 'package:provider/provider.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await dotenv.load(fileName: '.env');
   await Firebase.initializeApp();
 
-  final appDocumentDirectory = await path_provider.getApplicationDocumentsDirectory();
-  
+  final appDocumentDirectory =
+      await path_provider.getApplicationDocumentsDirectory();
+
   Hive.init(appDocumentDirectory.path);
-  
+
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  
+
   await _firebaseMessaging.requestPermission(
     alert: true,
     announcement: false,
@@ -32,15 +33,16 @@ Future main() async {
     provisional: false,
     sound: true,
   );
-  
+
   await notificationHive();
-  
+
   FirebaseMessaging.onMessage.listen(myBackgroundMessageHandler);
   FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
-  
+
   final settings = await Hive.openBox('settings');
   bool isLightTheme = settings.get('isLightTheme') ?? false;
-  
+
   runApp(ChangeNotifierProvider(
-      create: (_) => DarkModeProvider(isDarkTheme: isLightTheme), child: const App()));
+      create: (_) => DarkModeProvider(isDarkTheme: isLightTheme),
+      child: const App()));
 }

@@ -17,6 +17,5 @@ class AppNotification {
 }
 
 Future firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  debugPrint(
-      "Handling a background message : ${message.notification!.title}");
+  debugPrint("Handling a background message : ${message.notification!.title}");
 }

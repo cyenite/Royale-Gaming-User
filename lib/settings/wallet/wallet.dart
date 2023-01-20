@@ -53,13 +53,16 @@ class _WalletState extends State<Wallet> {
   @override
   Widget build(BuildContext context) {
     final UserData userData = Provider.of<UserData>(context);
-    final DarkModeProvider darkModeProvider = Provider.of<DarkModeProvider>(context);
+    final DarkModeProvider darkModeProvider =
+        Provider.of<DarkModeProvider>(context);
     final user = AuthService().user;
     return SingleChildScrollView(
       child: Column(
         children: [
           DesignContainer(
-            color: darkModeProvider.isDarkTheme ? DesignColor.blackFront : const Color(0xffffffff),
+            color: darkModeProvider.isDarkTheme
+                ? DesignColor.blackFront
+                : const Color(0xffffffff),
             margin: const EdgeInsets.fromLTRB(10, 4, 10, 0),
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -72,7 +75,11 @@ class _WalletState extends State<Wallet> {
                       margin: const EdgeInsets.only(right: 8),
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       child: CachedNetworkImage(
-                          height: 64, imageUrl: user!.isAnonymous ? AppInformation().userProfile : userData.profile, fit: BoxFit.cover),
+                          height: 64,
+                          imageUrl: user!.isAnonymous
+                              ? AppInformation().userProfile
+                              : userData.profile,
+                          fit: BoxFit.cover),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,27 +87,36 @@ class _WalletState extends State<Wallet> {
                         DesignText.bold1(
                           user.isAnonymous ? "Welcome to" : userData.name,
                           fontWeight: 700,
-                          color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                          color: darkModeProvider.isDarkTheme
+                              ? Colors.white
+                              : null,
                         ),
                         const SizedBox(height: 4),
                         DesignText.caption(
-                          user.isAnonymous ? AppInformation().appMainTitle : userData.email,
+                          user.isAnonymous
+                              ? AppInformation().appMainTitle
+                              : userData.email,
                           xMuted: true,
                           fontWeight: 600,
-                          color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                          color: darkModeProvider.isDarkTheme
+                              ? Colors.white
+                              : null,
                         ),
                         const SizedBox(height: 4),
                         Visibility(
                           visible: userData.referee != '',
                           child: DesignText.caption(
                             'Your Referee:  ' '${userData.referee}',
-                            color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                            color: darkModeProvider.isDarkTheme
+                                ? Colors.white
+                                : null,
                             fontWeight: 500,
                           ),
                         ),
                         const SizedBox(height: 4),
                         DesignText.caption(
-                          'Your Balance:  ' 'Ksh. ${userData.coins + userData.coinsWon}',
+                          'Your Balance:  '
+                          'Ksh. ${userData.coins + userData.coinsWon}',
                           color: Colors.green,
                           fontWeight: 700,
                         ),
@@ -112,7 +128,9 @@ class _WalletState extends State<Wallet> {
             ),
           ),
           DesignContainer(
-            color: darkModeProvider.isDarkTheme ? DesignColor.blackFront : const Color(0xffffffff),
+            color: darkModeProvider.isDarkTheme
+                ? DesignColor.blackFront
+                : const Color(0xffffffff),
             margin: const EdgeInsets.fromLTRB(10, 4, 10, 0),
             padding: const EdgeInsets.all(16),
             child: Center(
@@ -123,17 +141,24 @@ class _WalletState extends State<Wallet> {
                     child: DesignButtons.icon(
                       icon: const Icon(Ionicons.wallet_outline),
                       textLabel: 'Withdraw',
-                      colorText: darkModeProvider.isDarkTheme ? Colors.white : null,
+                      colorText:
+                          darkModeProvider.isDarkTheme ? Colors.white : null,
                       onPressed: () {
                         showModalBottomSheet(
-                            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(6))),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(6))),
                             context: context,
                             builder: (context) {
-                              return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+                              return StatefulBuilder(builder:
+                                  (BuildContext context, StateSetter setState) {
                                 return Padding(
                                   padding: const EdgeInsets.all(14.0),
                                   child: Padding(
-                                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                    padding: EdgeInsets.only(
+                                        bottom: MediaQuery.of(context)
+                                            .viewInsets
+                                            .bottom),
                                     child: ListView(
                                       children: [
                                         const SizedBox(height: 10),
@@ -142,13 +167,18 @@ class _WalletState extends State<Wallet> {
                                           decoration: const InputDecoration(
                                             labelText: 'Withdraw Amount',
                                             filled: true,
-                                            floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                            floatingLabelBehavior:
+                                                FloatingLabelBehavior.auto,
                                             contentPadding: EdgeInsets.all(8),
                                             focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.green, width: 2.0),
+                                              borderSide: BorderSide(
+                                                  color: Colors.green,
+                                                  width: 2.0),
                                             ),
                                             enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.green, width: 1.0),
+                                              borderSide: BorderSide(
+                                                  color: Colors.green,
+                                                  width: 1.0),
                                             ),
                                           ),
                                           keyboardType: TextInputType.number,
@@ -156,9 +186,12 @@ class _WalletState extends State<Wallet> {
                                         ListTile(
                                           title: DesignText.bold2(
                                             "MPESA",
-                                            color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                            color: darkModeProvider.isDarkTheme
+                                                ? Colors.white
+                                                : null,
                                           ),
-                                          contentPadding: const EdgeInsets.all(0),
+                                          contentPadding:
+                                              const EdgeInsets.all(0),
                                           dense: true,
                                           leading: Radio(
                                             value: 1,
@@ -176,16 +209,28 @@ class _WalletState extends State<Wallet> {
                                           controller: _withdrawWallet,
                                           decoration: InputDecoration(
                                             hintText: '254******',
-                                            labelText: _radioValue == 1 ? 'MPESA Number' : 'Airtel Number',
+                                            labelText: _radioValue == 1
+                                                ? 'MPESA Number'
+                                                : 'Airtel Number',
                                             filled: true,
-                                            fillColor: userData.isDark ? DesignColor.blackFront : null,
-                                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                            contentPadding: const EdgeInsets.all(8),
-                                            focusedBorder: const OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.green, width: 2.0),
+                                            fillColor: userData.isDark
+                                                ? DesignColor.blackFront
+                                                : null,
+                                            floatingLabelBehavior:
+                                                FloatingLabelBehavior.auto,
+                                            contentPadding:
+                                                const EdgeInsets.all(8),
+                                            focusedBorder:
+                                                const OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.green,
+                                                  width: 2.0),
                                             ),
-                                            enabledBorder: const OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.green, width: 1.0),
+                                            enabledBorder:
+                                                const OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.green,
+                                                  width: 1.0),
                                             ),
                                           ),
                                           keyboardType: TextInputType.phone,
@@ -196,52 +241,93 @@ class _WalletState extends State<Wallet> {
                                           decoration: InputDecoration(
                                             labelText: 'Your MPESA Name',
                                             filled: true,
-                                            fillColor: userData.isDark ? DesignColor.blackFront : null,
-                                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                            contentPadding: const EdgeInsets.all(8),
-                                            focusedBorder: const OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.green, width: 2.0),
+                                            fillColor: userData.isDark
+                                                ? DesignColor.blackFront
+                                                : null,
+                                            floatingLabelBehavior:
+                                                FloatingLabelBehavior.auto,
+                                            contentPadding:
+                                                const EdgeInsets.all(8),
+                                            focusedBorder:
+                                                const OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.green,
+                                                  width: 2.0),
                                             ),
-                                            enabledBorder: const OutlineInputBorder(
-                                              borderSide: BorderSide(color: Colors.green, width: 1.0),
+                                            enabledBorder:
+                                                const OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.green,
+                                                  width: 1.0),
                                             ),
                                           ),
                                           keyboardType: TextInputType.text,
                                         ),
                                         const SizedBox(height: 20),
                                         DesignButtons.icon(
-                                          icon: const Icon(Ionicons.wallet_outline),
+                                          icon: const Icon(
+                                              Ionicons.wallet_outline),
                                           textLabel: 'Withdraw ',
-                                          colorText: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                          colorText:
+                                              darkModeProvider.isDarkTheme
+                                                  ? Colors.white
+                                                  : null,
                                           onPressed: () {
-                                            if (_withdrawWallet.text.isEmpty || _goodName.text.isEmpty) {
+                                            if (_withdrawWallet.text.isEmpty ||
+                                                _goodName.text.isEmpty) {
                                               Fluttertoast.showToast(
-                                                  msg: _withdrawWallet.text.isEmpty
+                                                  msg: _withdrawWallet
+                                                          .text.isEmpty
                                                       ? _radioValue == 1
                                                           ? 'Enter MPESA Number'
                                                           : 'Enter Airtel Number'
                                                       : 'Please enter your MPESA name',
-                                                  toastLength: Toast.LENGTH_SHORT);
+                                                  toastLength:
+                                                      Toast.LENGTH_SHORT);
                                             } else {
                                               if (_amount.text.isEmpty) {
-                                                Fluttertoast.showToast(msg: "Amount is required", toastLength: Toast.LENGTH_SHORT);
+                                                Fluttertoast.showToast(
+                                                    msg: "Amount is required",
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT);
                                               } else {
-                                                if (!int.parse(_amount.text).isNegative) {
-                                                  int.parse(_amount.text) <= userData.coins && int.parse(_amount.text) != 0
+                                                if (!int.parse(_amount.text)
+                                                    .isNegative) {
+                                                  int.parse(_amount.text) <=
+                                                              userData.coins &&
+                                                          int.parse(_amount.text) !=
+                                                              0
                                                       ? FirestoreService()
                                                           .updateWallet(
-                                                              -int.parse(_amount.text).abs(),
+                                                              -int.parse(_amount.text)
+                                                                  .abs(),
                                                               'Withdraw',
-                                                              DateTime.now().toString(),
+                                                              DateTime.now()
+                                                                  .toString(),
                                                               _goodName.text,
-                                                              _radioValue == 1 ? 'MPESA NUMBER' : 'Paytm Number',
-                                                              _withdrawWallet.text,
+                                                              _radioValue == 1
+                                                                  ? 'MPESA NUMBER'
+                                                                  : 'Paytm Number',
+                                                              _withdrawWallet
+                                                                  .text,
                                                               false)
-                                                          .whenComplete(() => Fluttertoast.showToast(msg: "SUCCESS", toastLength: Toast.LENGTH_SHORT))
-                                                          .whenComplete(() => Navigator.pop(context))
-                                                      : Fluttertoast.showToast(msg: "Balance Low", toastLength: Toast.LENGTH_SHORT);
+                                                          .whenComplete(() => Fluttertoast.showToast(
+                                                              msg: "SUCCESS",
+                                                              toastLength: Toast
+                                                                  .LENGTH_SHORT))
+                                                          .whenComplete(() =>
+                                                              Navigator.pop(
+                                                                  context))
+                                                      : Fluttertoast.showToast(
+                                                          msg: "Balance Low",
+                                                          toastLength:
+                                                              Toast.LENGTH_SHORT);
                                                 } else {
-                                                  Fluttertoast.showToast(msg: "Account balance must be in Positive", toastLength: Toast.LENGTH_SHORT);
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "Account balance must be in Positive",
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT);
                                                 }
                                               }
                                             }
@@ -261,14 +347,19 @@ class _WalletState extends State<Wallet> {
                     child: DesignButtons.icon(
                       icon: const Icon(Ionicons.wallet_outline),
                       textLabel: 'Deposit',
-                      colorText: darkModeProvider.isDarkTheme ? Colors.white : null,
+                      colorText:
+                          darkModeProvider.isDarkTheme ? Colors.white : null,
                       onPressed: () {
                         showModalBottomSheet(
-                          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(6))),
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(6))),
                           context: context,
                           builder: (context) {
                             return Padding(
-                              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                              padding: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).viewInsets.bottom),
                               child: SizedBox(
                                 height: 170,
                                 child: Padding(
@@ -279,27 +370,34 @@ class _WalletState extends State<Wallet> {
                                       TextField(
                                         controller: _amount,
                                         decoration: const InputDecoration(
-                                          labelText: 'Enter Amount (No decimals)',
+                                          labelText:
+                                              'Enter Amount (No decimals)',
                                           filled: true,
-                                          floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                          floatingLabelBehavior:
+                                              FloatingLabelBehavior.auto,
                                           contentPadding: EdgeInsets.all(16),
                                           focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                            borderSide: BorderSide(
+                                                color: Colors.blue, width: 2.0),
                                           ),
                                           enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                                            borderSide: BorderSide(
+                                                color: Colors.blue, width: 1.0),
                                           ),
                                         ),
                                         keyboardType: TextInputType.number,
                                       ),
                                       const SizedBox(height: 20),
                                       DesignButtons.icon(
-                                        icon: const Icon(Ionicons.wallet_outline),
+                                        icon:
+                                            const Icon(Ionicons.wallet_outline),
                                         textLabel: 'Add Money from MPESA',
                                         onPressed: () {
                                           openCheckout(user);
                                         },
-                                        colorText: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                        colorText: darkModeProvider.isDarkTheme
+                                            ? Colors.white
+                                            : null,
                                       ),
                                     ],
                                   ),
@@ -316,7 +414,9 @@ class _WalletState extends State<Wallet> {
             ),
           ),
           DesignContainer(
-            color: darkModeProvider.isDarkTheme ? DesignColor.blackFront : const Color(0xffffffff),
+            color: darkModeProvider.isDarkTheme
+                ? DesignColor.blackFront
+                : const Color(0xffffffff),
             margin: const EdgeInsets.fromLTRB(10, 4, 10, 0),
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -332,7 +432,8 @@ class _WalletState extends State<Wallet> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         fullscreenDialog: true,
-                        builder: (BuildContext context) => const ProfileUpdate(),
+                        builder: (BuildContext context) =>
+                            const ProfileUpdate(),
                       ),
                     );
                   },
@@ -347,7 +448,9 @@ class _WalletState extends State<Wallet> {
                         DesignText.bold2(
                           "Profile Update",
                           letterSpacing: 0,
-                          color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                          color: darkModeProvider.isDarkTheme
+                              ? Colors.white
+                              : null,
                         ),
                       ],
                     ),
@@ -371,7 +474,8 @@ class _WalletState extends State<Wallet> {
                       DesignText.bold2(
                         "Notifications",
                         letterSpacing: 0,
-                        color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                        color:
+                            darkModeProvider.isDarkTheme ? Colors.white : null,
                       ),
                     ],
                   ),
@@ -407,7 +511,9 @@ class _WalletState extends State<Wallet> {
                         DesignText.bold2(
                           "Transactions",
                           letterSpacing: 0,
-                          color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                          color: darkModeProvider.isDarkTheme
+                              ? Colors.white
+                              : null,
                         ),
                       ],
                     ),
@@ -423,7 +529,8 @@ class _WalletState extends State<Wallet> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         fullscreenDialog: true,
-                        builder: (BuildContext context) =>  ReferralsPage(username:userData.name),
+                        builder: (BuildContext context) =>
+                            ReferralsPage(username: userData.name),
                       ),
                     );
                   },
@@ -433,11 +540,14 @@ class _WalletState extends State<Wallet> {
                     visualDensity: VisualDensity.compact,
                     title: Row(
                       children: [
-                        const Icon(Icons.supervised_user_circle_sharp, size: 18),
+                        const Icon(Icons.supervised_user_circle_sharp,
+                            size: 18),
                         const SizedBox(width: 4),
                         DesignText.bold2(
                           "Referals",
-                          color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                          color: darkModeProvider.isDarkTheme
+                              ? Colors.white
+                              : null,
                           letterSpacing: 0,
                         ),
                       ],
@@ -469,7 +579,9 @@ class _WalletState extends State<Wallet> {
                         const SizedBox(width: 4),
                         DesignText.bold2(
                           "FAQ",
-                          color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                          color: darkModeProvider.isDarkTheme
+                              ? Colors.white
+                              : null,
                           letterSpacing: 0,
                         ),
                       ],
@@ -488,7 +600,8 @@ class _WalletState extends State<Wallet> {
                   colorText: darkModeProvider.isDarkTheme ? Colors.white : null,
                   onPressed: () async {
                     await AuthService().signOut();
-                    Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil('/', (route) => false);
                   },
                 ),
               ],
@@ -534,9 +647,15 @@ class _WalletState extends State<Wallet> {
     }
   }
 
-  _handlePaymentInitialization({required String email, required String name, required String userId, required String phone}) async {
-    final Customer customer = Customer(name: name, phoneNumber: phone, email: email);
-    String transactionRef = '${userId}_${DateTime.now().millisecondsSinceEpoch}';
+  _handlePaymentInitialization(
+      {required String email,
+      required String name,
+      required String userId,
+      required String phone}) async {
+    final Customer customer =
+        Customer(name: name, phoneNumber: phone, email: email);
+    String transactionRef =
+        '${userId}_${DateTime.now().millisecondsSinceEpoch}';
     final Flutterwave flutterwave = Flutterwave(
         context: context,
         publicKey: 'FLWPUBK-ae852130367a333373c58783866f8c04-X',
@@ -550,12 +669,16 @@ class _WalletState extends State<Wallet> {
         isTestMode: false);
     final ChargeResponse response = await flutterwave.charge();
     if (response != null) {
-      if (response.toJson()['status'] == 'successful' && response.toJson()['success'] == true) {
+      if (response.toJson()['status'] == 'successful' &&
+          response.toJson()['success'] == true) {
         _handlePaymentSuccess(transactionRef);
       } else {
         FirestoreService()
-            .updateWallet(0, 'Cancelled', DateTime.now().toString(), '', '', '', true)
-            .whenComplete(() => Fluttertoast.showToast(msg: "Oops: Your transaction was cancelled", toastLength: Toast.LENGTH_SHORT))
+            .updateWallet(
+                0, 'Cancelled', DateTime.now().toString(), '', '', '', true)
+            .whenComplete(() => Fluttertoast.showToast(
+                msg: "Oops: Your transaction was cancelled",
+                toastLength: Toast.LENGTH_SHORT))
             .whenComplete(() => Navigator.pop(context));
       }
 
@@ -567,8 +690,11 @@ class _WalletState extends State<Wallet> {
 
   void _handlePaymentSuccess(String transactionId) {
     FirestoreService()
-        .updateWallet(int.parse(_amount.text), 'Deposit ID: $transactionId', DateTime.now().toString(), '', '', '', false)
-        .whenComplete(() => Fluttertoast.showToast(msg: "SUCCESS SUCCESS: Your funds have been deposited", toastLength: Toast.LENGTH_SHORT))
+        .updateWallet(int.parse(_amount.text), 'Deposit ID: $transactionId',
+            DateTime.now().toString(), '', '', '', false)
+        .whenComplete(() => Fluttertoast.showToast(
+            msg: "SUCCESS SUCCESS: Your funds have been deposited",
+            toastLength: Toast.LENGTH_SHORT))
         .whenComplete(() => Navigator.pop(context));
   }
 
@@ -576,15 +702,27 @@ class _WalletState extends State<Wallet> {
     // updateWallet
     // FirestoreService().updateWallet(11, 'anai', 123345);
     FirestoreService()
-        .updateWallet(0, response.message.toString(), DateTime.now().toString(), '', '', '', true)
-        .whenComplete(() => Fluttertoast.showToast(msg: "Faild: " + response.message.toString(), toastLength: Toast.LENGTH_SHORT))
+        .updateWallet(0, response.message.toString(), DateTime.now().toString(),
+            '', '', '', true)
+        .whenComplete(() => Fluttertoast.showToast(
+            msg: "Faild: " + response.message.toString(),
+            toastLength: Toast.LENGTH_SHORT))
         .whenComplete(() => Navigator.pop(context));
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
     FirestoreService()
-        .updateWallet(0, 'ExternalWalletResponse' + response.walletName.toString(), DateTime.now().toString(), '', '', '', true)
-        .whenComplete(() => Fluttertoast.showToast(msg: "ExternalWalletResponse: " + response.walletName.toString(), toastLength: Toast.LENGTH_SHORT))
+        .updateWallet(
+            0,
+            'ExternalWalletResponse' + response.walletName.toString(),
+            DateTime.now().toString(),
+            '',
+            '',
+            '',
+            true)
+        .whenComplete(() => Fluttertoast.showToast(
+            msg: "ExternalWalletResponse: " + response.walletName.toString(),
+            toastLength: Toast.LENGTH_SHORT))
         .whenComplete(() => Navigator.pop(context));
   }
 }

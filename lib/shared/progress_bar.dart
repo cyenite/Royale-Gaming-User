@@ -82,7 +82,7 @@ class ProgressBar extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 8),
       child: Text(
-        '$maxPlayers / $joinedPlayers',
+        '$joinedPlayers / $maxPlayers',
         style: const TextStyle(fontSize: 10, color: Colors.grey),
       ),
     );

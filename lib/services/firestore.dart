@@ -80,7 +80,10 @@ class FirestoreService {
   }
 
   Future<List<Tournaments>> getAllTournaments(String tId, String status) async {
-    var ref = _db.collection('alltournaments').where('id', isEqualTo: tId).where('status', isEqualTo: status);
+    var ref = _db
+        .collection('alltournaments')
+        .where('id', isEqualTo: tId)
+        .where('status', isEqualTo: status);
     var snapshot = await ref.get();
     var data = snapshot.docs.map((s) => s.data());
     var newGames = data.map((d) => Tournaments.fromJson(d));
@@ -95,7 +98,10 @@ class FirestoreService {
   }
 
   Future<List<Tournaments>> streamOngoing() async {
-    var ref = _db.collection('alltournaments').orderBy('date', descending: false).where('status', isEqualTo: 'ongoing');
+    var ref = _db
+        .collection('alltournaments')
+        .orderBy('date', descending: false)
+        .where('status', isEqualTo: 'ongoing');
     var snapshot = await ref.get();
     var data = snapshot.docs.map((s) => s.data());
     var streamOngoing = data.map((e) => Tournaments.fromJson(e));
@@ -190,7 +196,8 @@ class FirestoreService {
     var data = {
       'coins': FieldValue.increment(amount),
     };
-    var ref = _db.collection('usersdata').where('name', isEqualTo: referee).get();
+    var ref =
+        _db.collection('usersdata').where('name', isEqualTo: referee).get();
     ref.then((value) {
       if (value.docs.isNotEmpty) {
         return value.docs.first.reference.set(data, SetOptions(merge: true));
@@ -238,10 +245,12 @@ class FirestoreService {
     );
   }
 
-  void phoneAuthProvider(String otp, String verificationId, String referee) async {
+  void phoneAuthProvider(
+      String otp, String verificationId, String referee) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     String smsCode = otp;
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationId, smsCode: smsCode);
     await auth.signInWithCredential(credential);
     var user = AuthService().user!;
     var ref = _db.collection('usersdata').doc(user.uid);
