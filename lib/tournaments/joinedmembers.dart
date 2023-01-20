@@ -33,7 +33,8 @@ class JoinedMembers extends StatelessWidget {
                     return MembersCard(
                         index: (index + 1).toString(),
                         membersName: data[index].playerGameID);
-                  }),
+                  },
+              ),
             )
           ],
         ),

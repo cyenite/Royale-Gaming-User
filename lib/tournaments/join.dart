@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 
 import 'package:app_tournament/config/app_information.dart';
 import 'package:app_tournament/games/results.dart';
