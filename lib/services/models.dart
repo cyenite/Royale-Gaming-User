@@ -105,6 +105,7 @@ class UserData {
   String profile;
   String email;
   String referee;
+  int refereeBonus;
   int coins;
   int coinsWon;
   bool isDark;
@@ -121,9 +122,11 @@ class UserData {
     this.totalsignin = 0,
     this.coins = 0,
     this.coinsWon = 0,
+    this.refereeBonus = 0,
     this.referee = '',
     this.transaction = const [],
     this.joinedTournaments = const [],
+    
   });
   factory UserData.fromJson(Map<String, dynamic> json) => _$UserDataFromJson(json);
   Map<String, dynamic> toJson() => _$UserDataToJson(this);

@@ -5,6 +5,7 @@ import 'package:app_tournament/services/auth.dart';
 import 'package:app_tournament/services/firestore.dart';
 import 'package:app_tournament/services/models.dart';
 import 'package:app_tournament/settings/wallet/profile_update.dart';
+import 'package:app_tournament/settings/wallet/referals.dart';
 import 'package:app_tournament/settings/wallet/transactions.dart';
 import 'package:app_tournament/ui/custom/custom_color.dart';
 import 'package:app_tournament/ui/theme/buttons/buttons.dart';
@@ -414,6 +415,38 @@ class _WalletState extends State<Wallet> {
                     ),
                   ),
                 ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (BuildContext context) =>  ReferralsPage(username:userData.name),
+                      ),
+                    );
+                  },
+                  child: ListTile(
+                    dense: true,
+                    contentPadding: const EdgeInsets.all(0),
+                    visualDensity: VisualDensity.compact,
+                    title: Row(
+                      children: [
+                        const Icon(Icons.supervised_user_circle_sharp, size: 18),
+                        const SizedBox(width: 4),
+                        DesignText.bold2(
+                          "Referals",
+                          color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                          letterSpacing: 0,
+                        ),
+                      ],
+                    ),
+                    trailing: Icon(
+                      Icons.chevron_right,
+                      size: 20,
+                      color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(

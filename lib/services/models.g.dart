@@ -117,6 +117,7 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) => UserData(
       isDark: json['isDark'] as bool? ?? false,
       totalsignin: json['totalsignin'] as int? ?? 0,
       coins: json['coins'] as int? ?? 0,
+      refereeBonus: json['refereeBonus'] as int? ?? 0,
       transaction: (json['transaction'] as List<dynamic>?)?.map((e) => Transaction.fromJson(e as Map<String, dynamic>)).toList() ?? const [],
       joinedTournaments: json['joinedTournaments'] as List<dynamic>? ?? const [],
     );
@@ -131,6 +132,8 @@ Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
       'totalsignin': instance.totalsignin,
       'transaction': instance.transaction,
       'joinedTournaments': instance.joinedTournaments,
+      'referee': instance.referee,
+      'refereeBonus': instance.refereeBonus,
     };
 
 Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(

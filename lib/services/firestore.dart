@@ -70,6 +70,15 @@ class FirestoreService {
     return newGames.toList();
   }
 
+// Get referrals for a user
+  Future<List<UserData>> getReferrals(String username) async {
+    var ref = _db.collection('usersdata').where('referee', isEqualTo: username);
+    var snapshot = await ref.get();
+    var data = snapshot.docs.map((s) => s.data());
+    var referrals = data.map((d) => UserData.fromJson(d));
+    return referrals.toList();
+  }
+
   Future<List<Tournaments>> getAllTournaments(String tId, String status) async {
     var ref = _db.collection('alltournaments').where('id', isEqualTo: tId).where('status', isEqualTo: status);
     var snapshot = await ref.get();
@@ -239,7 +248,7 @@ class FirestoreService {
     DocumentSnapshot snap = await ref.get();
     var data = {
       'totalsignin': FieldValue.increment(1),
-      'name': 'Update Your Username',
+      'name': 'anonymous',
       'profile': AppInformation().userProfile,
       'email': user.phoneNumber,
       'isDark': false,
