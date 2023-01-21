@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'models.g.dart';
@@ -181,4 +183,11 @@ class FAQModel {
     this.isNew = false,
   });
   factory FAQModel.fromJson(Map<String, dynamic> json) => _$FAQFromJson(json);
+}
+
+enum PaymentStatus {
+  AUTHORIZED,
+  NOTIFICATION_SENT,
+  VERIFIED,
+  FAILED,
 }
