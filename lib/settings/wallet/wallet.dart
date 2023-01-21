@@ -9,6 +9,7 @@ import 'package:app_tournament/settings/wallet/payment.dart';
 import 'package:app_tournament/settings/wallet/profile_update.dart';
 import 'package:app_tournament/settings/wallet/referals.dart';
 import 'package:app_tournament/settings/wallet/transactions.dart';
+import 'package:app_tournament/settings/wallet/withdraw.dart';
 import 'package:app_tournament/ui/custom/custom_color.dart';
 import 'package:app_tournament/ui/theme/buttons/buttons.dart';
 import 'package:app_tournament/ui/theme/container.dart';
@@ -307,7 +308,8 @@ class _WalletState extends State<Wallet> {
                                                               .text,
                                                           amount: _amount.text)
                                                       : Fluttertoast.showToast(
-                                                          msg: "Balance Low",
+                                                          msg:
+                                                              "Check on your amount",
                                                           toastLength: Toast
                                                               .LENGTH_SHORT);
                                                 } else {
@@ -633,10 +635,6 @@ class _WalletState extends State<Wallet> {
   @override
   void initState() {
     super.initState();
-    _razorpay = Razorpay();
-    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
-    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
 
   @override
@@ -716,22 +714,6 @@ class _WalletState extends State<Wallet> {
  */
   }
 
-  void _handlePaymentSuccess(String transactionId) {
-    FirestoreService()
-        .updateWallet(
-            int.parse(_amount.text.isEmpty ? '0' : _amount.text),
-            'Deposit ID: $transactionId',
-            DateTime.now().toString(),
-            '',
-            '',
-            '',
-            false)
-        .whenComplete(() => Fluttertoast.showToast(
-            msg: "SUCCESS SUCCESS: Your funds have been deposited",
-            toastLength: Toast.LENGTH_SHORT))
-        .whenComplete(() => Navigator.pop(context));
-  }
-
   void _handlePaymentError(PaymentFailureResponse response) {
     // updateWallet
     // FirestoreService().updateWallet(11, 'anai', 123345);
@@ -761,34 +743,29 @@ class _WalletState extends State<Wallet> {
   }
 
   _handleWithdrawService({required String phone, required String amount}) {
-    if (int.parse(amount) < 50) {
+    if (int.parse(amount) > 49) {
+      NetworkService().authorize().then(
+        (value) {
+          Navigator.pop(context);
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: ((context) => WithdrawPage(
+                  accessToken: value,
+                  amount: int.parse(_amount.text),
+                  phone: _withdrawWallet.text,
+                  name: _goodName.text,
+                )),
+          ));
+        },
+      );
+    } else {
       Fluttertoast.showToast(
           msg: 'Minimum withdrawal amount is Ksh. 50',
           toastLength: Toast.LENGTH_LONG);
-    } else {
-      NetworkService().authorize().then((value) {
+      /* NetworkService().authorize().then((value) {
         if (value.isNotEmpty) {
-          NetworkService()
-              .withdrawFunds(
-                  phone: phone, accToken: value, amount: int.parse(amount))
-              .then((result) {
-            if (result['paid']) {
-              FirestoreService()
-                  .updateWallet(
-                      -int.parse(amount).abs(),
-                      'Withdraw',
-                      DateTime.now().toString(),
-                      _goodName.text,
-                      _radioValue == 1 ? 'MPESA NUMBER' : 'Paytm Number',
-                      _withdrawWallet.text,
-                      false)
-                  .whenComplete(() => Navigator.pop(context));
-              SVProgressHUD.showSuccess(
-                  status: 'Transaction processed successfully');
-            }
-          });
+          
         }
-      });
+      }); */
     }
   }
 }

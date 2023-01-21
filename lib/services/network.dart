@@ -117,7 +117,6 @@ class NetworkService {
       {required String phone,
       required String accToken,
       required int amount}) async {
-    SVProgressHUD.show(status: "Processing...");
     final response = await http.post(
         Uri.parse('${dotenv.env['PRODUCTION_URL'] ?? ''}/payments/b2c/'),
         headers: {
@@ -126,7 +125,8 @@ class NetworkService {
         },
         body: jsonEncode({
           "MerchantCode": dotenv.env['MERCHANT_CODE'] ?? '',
-          "MerchantTransactionReference": phone,
+          "MerchantTransactionReference":
+              phone + DateTime.now().millisecondsSinceEpoch.toString(),
           "Amount": amount,
           "Currency": "KES",
           "ReceiverNumber": phone,
@@ -135,30 +135,24 @@ class NetworkService {
           "CallBackURL": dotenv.env['B2C_CALLBACK_URL'] ?? '',
         }));
 
-    if (kDebugMode) {
-      print("Status: ${response.body}");
-    }
-
     if (response.statusCode == 200) {
       if (jsonDecode(response.body)['status'] != true) {
-        SVProgressHUD.dismiss();
         return {
           'paid': false,
           'ResponseCode': '',
           'done': true,
         };
       } else {
-        SVProgressHUD.dismiss();
         return {
           'ResponseCode': jsonDecode(response.body)['ResponseCode'],
           'done': true,
+          'paid': true,
         };
       }
     } else {
       if (kDebugMode) {
         print("Server did not respond: Status code: ${response.statusCode}");
       }
-      SVProgressHUD.dismiss();
       return {
         'paid': false,
         'tId': '',

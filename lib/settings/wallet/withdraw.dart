@@ -1,5 +1,3 @@
-// ignore_for_file: depend_on_referenced_packages
-
 import 'package:app_tournament/services/network.dart';
 import 'package:app_tournament/services/services.dart';
 import 'package:app_tournament/ui/custom/custom_color.dart';
@@ -7,28 +5,28 @@ import 'package:app_tournament/ui/gradient/text_gradient.dart';
 import 'package:app_tournament/ui/theme/text.dart';
 import 'package:app_tournament/ui/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
-class PaymentsPage extends StatefulWidget {
+class WithdrawPage extends StatefulWidget {
   final String accessToken;
   final String phone;
+  final String name;
   final int amount;
-  const PaymentsPage({
+  const WithdrawPage({
     Key? key,
     required this.accessToken,
     required this.phone,
     required this.amount,
+    required this.name,
   }) : super(key: key);
 
   @override
-  State<PaymentsPage> createState() => _PaymentsPageState();
+  State<WithdrawPage> createState() => _WithdrawPageState();
 }
 
-class _PaymentsPageState extends State<PaymentsPage> {
+class _WithdrawPageState extends State<WithdrawPage> {
   PaymentStatus paymentStatus = PaymentStatus.AUTHORIZED;
   String transactionId = '';
 
@@ -40,45 +38,29 @@ class _PaymentsPageState extends State<PaymentsPage> {
 
   initiatePayment() {
     NetworkService()
-        .requestPayment(
+        .withdrawFunds(
+            phone: widget.phone,
             accToken: widget.accessToken,
-            phoneNumber: widget.phone,
             amount: widget.amount)
-        .then((value) {
-      if (value['success']) {
-        setState(() {
-          paymentStatus = PaymentStatus.NOTIFICATION_SENT;
-        });
-        verifyPayment(checkoutReqId: value['checkoutRequestId']);
-      } else {
-        setState(() {
-          paymentStatus = PaymentStatus.FAILED;
-        });
-      }
-    });
-  }
-
-  verifyPayment({required String checkoutReqId}) {
-    NetworkService()
-        .verifyPayment(
-            checkoutReqId: checkoutReqId, accToken: widget.accessToken)
-        .then((value) {
-      if (value['paid']) {
+        .then((result) {
+      if (result['paid']) {
         FirestoreService()
-            .updateWallet(widget.amount, 'Phone number: ${widget.phone}',
-                DateTime.now().toString(), '', '', '', false)
-            .whenComplete(() => Fluttertoast.showToast(
-                msg: "SUCCESS SUCCESS: Your funds have been deposited",
-                toastLength: Toast.LENGTH_SHORT))
+            .updateWallet(
+                -widget.amount.abs(),
+                'Withdraw',
+                DateTime.now().toString(),
+                widget.name,
+                'MPESA NUMBER',
+                widget.phone,
+                false)
             .whenComplete(() {
           setState(() {
             paymentStatus = PaymentStatus.VERIFIED;
-            transactionId = value['tId'];
           });
         });
       } else {
-        Future.delayed(const Duration(seconds: 4), () {
-          verifyPayment(checkoutReqId: checkoutReqId);
+        setState(() {
+          paymentStatus = PaymentStatus.FAILED;
         });
       }
     });
@@ -91,7 +73,7 @@ class _PaymentsPageState extends State<PaymentsPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        title: const TextGradient(text: 'Deposit Status', appbarfontsize: 24),
+        title: const TextGradient(text: 'Funds Withdrawal', appbarfontsize: 24),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -112,62 +94,24 @@ class _PaymentsPageState extends State<PaymentsPage> {
               ),
               child: Visibility(
                 visible: paymentStatus == PaymentStatus.VERIFIED,
-                replacement: Visibility(
-                  visible: paymentStatus == PaymentStatus.NOTIFICATION_SENT,
-                  replacement: Column(
-                    children: [
-                      Lottie.asset('assets/error.json', height: 100),
-                      const DesignText.bold2(
-                        'TRANSACTION FAILED. KINDLY TRY AGAIN.',
-                        color: Colors.grey,
-                        fontWeight: 800,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      DesignText.bold2(
-                        'MPESA Prompt Sent to ${widget.phone}',
-                        color: darkModeProvider.isDarkTheme
-                            ? Colors.white
-                            : Colors.black,
-                        fontWeight: 800,
-                      ),
-                      const SizedBox(height: 10),
-                      const DesignText.bold2(
-                        'Step 1. Enter your MPESA pin to authorize transaction.',
-                        color: Colors.grey,
-                        fontWeight: 500,
-                      ),
-                      const DesignText.bold2(
-                        'Step 2. Submit.',
-                        color: Colors.grey,
-                        fontWeight: 500,
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          DesignText.bold2(
-                            'WARNING! DO NOT CLOSE THIS PAGE YET',
-                            color: darkModeProvider.isDarkTheme
-                                ? Colors.red
-                                : Colors.red,
-                            fontWeight: 800,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                replacement: Column(
+                  children: [
+                    Lottie.asset('assets/error.json', height: 100),
+                    const DesignText.bold2(
+                      'REQUEST FAILED. KINDLY TRY AGAIN LATER.',
+                      color: Colors.grey,
+                      fontWeight: 800,
+                    ),
+                  ],
                 ),
                 child: Column(
                   children: [
                     Lottie.asset('assets/completed.json', height: 100),
-                    const DesignText.bold2(
-                      'PAYMENT PROCESSED SUCCESDFULLY.',
+                    DesignText.bold2(
+                      'WITHDRAWAL TO ${widget.phone} PROCESSED SUCCESSFULLY.',
                       color: Colors.grey,
                       fontWeight: 800,
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
@@ -207,9 +151,9 @@ class _PaymentsPageState extends State<PaymentsPage> {
                     ),
                     child: const Center(
                         child: DesignText.caption(
-                      'TILL NUMBER',
+                      'MPESA',
                       color: Colors.black,
-                      fontWeight: 700,
+                      fontWeight: 900,
                     )),
                   ),
                   Container(
@@ -229,8 +173,8 @@ class _PaymentsPageState extends State<PaymentsPage> {
                       fontSize: 16.0,
                     )),
                   ),
-                  const DesignText.bold2(
-                    'ROYALE TOURNAMENTS',
+                  DesignText.bold2(
+                    widget.name.toUpperCase(),
                     color: Colors.grey,
                     fontWeight: 800,
                   ),
@@ -265,18 +209,10 @@ class _PaymentsPageState extends State<PaymentsPage> {
                             children: const [
                               Center(
                                 child: DesignText.caption(
-                                  '',
+                                  'Transaction Successful',
                                   color: Colors.green,
                                   fontWeight: 700,
                                 ),
-                              ),
-                              SizedBox(
-                                width: 10.0,
-                              ),
-                              Icon(
-                                Icons.copy,
-                                color: Colors.green,
-                                size: 15,
                               ),
                             ],
                           ),
@@ -284,44 +220,25 @@ class _PaymentsPageState extends State<PaymentsPage> {
                       ),
                     ),
                     child: Flexible(
-                      child: GestureDetector(
-                        onTap: () async {
-                          await Clipboard.setData(
-                                  ClipboardData(text: transactionId))
-                              .then((value) {
-                            Fluttertoast.showToast(
-                                msg: "Reference copied to clipboard.",
-                                toastLength: Toast.LENGTH_SHORT);
-                          });
-                        },
-                        child: Container(
-                          height: 20.0,
-                          width: MediaQuery.of(context).size.width * 0.6,
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: Colors.green.shade100,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Center(
-                                child: DesignText.caption(
-                                  '$transactionId confirmed...',
-                                  color: Colors.green.shade900,
-                                  fontWeight: 700,
-                                ),
+                      child: Container(
+                        height: 20.0,
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.green.shade100,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Center(
+                              child: DesignText.caption(
+                                'Withdawal successful',
+                                color: Colors.green.shade900,
+                                fontWeight: 700,
                               ),
-                              const SizedBox(
-                                width: 10.0,
-                              ),
-                              const Icon(
-                                Icons.copy,
-                                color: Colors.green,
-                                size: 15,
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
