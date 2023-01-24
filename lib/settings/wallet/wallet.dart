@@ -19,6 +19,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svprogresshud/flutter_svprogresshud.dart';
+import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutterwave_standard/flutterwave.dart';
 import 'package:ionicons/ionicons.dart';
@@ -557,6 +558,112 @@ class _WalletState extends State<Wallet> {
                         const SizedBox(width: 4),
                         DesignText.bold2(
                           "Referals",
+                          color: darkModeProvider.isDarkTheme
+                              ? Colors.white
+                              : null,
+                          letterSpacing: 0,
+                        ),
+                      ],
+                    ),
+                    trailing: Icon(
+                      Icons.chevron_right,
+                      size: 20,
+                      color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                GestureDetector(
+                  onTap: () async {
+                    await FlutterWebBrowser.openWebPage(
+                      url: "https://t.me/royale_care",
+                      customTabsOptions: CustomTabsOptions(
+                        colorScheme: darkModeProvider.isDarkTheme
+                            ? CustomTabsColorScheme.dark
+                            : CustomTabsColorScheme.light,
+                        toolbarColor: darkModeProvider.isDarkTheme
+                            ? DesignColor.blackAppbar
+                            : Colors.white,
+                        shareState: CustomTabsShareState.off,
+                        instantAppsEnabled: false,
+                        showTitle: true,
+                        urlBarHidingEnabled: true,
+                      ),
+                      safariVCOptions: const SafariViewControllerOptions(
+                        barCollapsingEnabled: true,
+                        dismissButtonStyle:
+                            SafariViewControllerDismissButtonStyle.close,
+                        modalPresentationCapturesStatusBarAppearance: true,
+                      ),
+                    );
+                  },
+                  child: ListTile(
+                    dense: true,
+                    contentPadding: const EdgeInsets.all(0),
+                    visualDensity: VisualDensity.compact,
+                    title: Row(
+                      children: [
+                        const Icon(
+                          Ionicons.chatbox_ellipses_outline,
+                          size: 18,
+                          color: Colors.orange,
+                        ),
+                        const SizedBox(width: 4),
+                        DesignText.bold2(
+                          "Contact Customer Care",
+                          color: darkModeProvider.isDarkTheme
+                              ? Colors.white
+                              : null,
+                          letterSpacing: 0,
+                        ),
+                      ],
+                    ),
+                    trailing: Icon(
+                      Icons.chevron_right,
+                      size: 20,
+                      color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                GestureDetector(
+                  onTap: () async {
+                    await FlutterWebBrowser.openWebPage(
+                      url: "https://t.me/royale_gaming",
+                      customTabsOptions: CustomTabsOptions(
+                        colorScheme: darkModeProvider.isDarkTheme
+                            ? CustomTabsColorScheme.dark
+                            : CustomTabsColorScheme.light,
+                        toolbarColor: darkModeProvider.isDarkTheme
+                            ? DesignColor.blackAppbar
+                            : Colors.white,
+                        shareState: CustomTabsShareState.off,
+                        instantAppsEnabled: false,
+                        showTitle: true,
+                        urlBarHidingEnabled: true,
+                      ),
+                      safariVCOptions: const SafariViewControllerOptions(
+                        barCollapsingEnabled: true,
+                        dismissButtonStyle:
+                            SafariViewControllerDismissButtonStyle.close,
+                        modalPresentationCapturesStatusBarAppearance: true,
+                      ),
+                    );
+                  },
+                  child: ListTile(
+                    dense: true,
+                    contentPadding: const EdgeInsets.all(0),
+                    visualDensity: VisualDensity.compact,
+                    title: Row(
+                      children: [
+                        const Icon(
+                          Ionicons.chatbubbles_outline,
+                          size: 18,
+                          color: Colors.blue,
+                        ),
+                        const SizedBox(width: 4),
+                        DesignText.bold2(
+                          "Telegram Channel",
                           color: darkModeProvider.isDarkTheme
                               ? Colors.white
                               : null,

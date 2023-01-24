@@ -99,7 +99,7 @@ class _TransactionsState extends State<Transactions> {
                                 Padding(
                                   padding: EdgeInsets.all(14),
                                   child: DesignText(
-                                    'Coins',
+                                    'Amount',
                                     color: Colors.white,
                                   ),
                                 ),

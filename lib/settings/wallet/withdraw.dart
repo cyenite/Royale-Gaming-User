@@ -107,6 +107,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                 child: Column(
                   children: [
                     Lottie.asset('assets/completed.json', height: 100),
+                    const SizedBox(height: 10.0),
                     DesignText.bold2(
                       'WITHDRAWAL TO ${widget.phone} PROCESSED SUCCESSFULLY.',
                       color: Colors.grey,

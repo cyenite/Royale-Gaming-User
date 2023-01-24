@@ -193,15 +193,20 @@ class FirestoreService {
     int amount,
     String referee,
   ) {
+    var user = AuthService().user!;
     var data = {
       'coins': FieldValue.increment(amount),
     };
     var ref =
         _db.collection('usersdata').where('name', isEqualTo: referee).get();
+    var userRef = _db.collection('usersdata').doc(user.uid);
     ref.then((value) {
       if (value.docs.isNotEmpty) {
         return value.docs.first.reference.set(data, SetOptions(merge: true));
       }
+    }).whenComplete(() {
+      userRef.set({'referee': referee, 'refereeBonus': amount},
+          SetOptions(merge: true));
     });
     return Future(() => null);
   }

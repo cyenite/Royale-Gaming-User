@@ -302,8 +302,6 @@ class _OngoingGameplayState extends State<OngoingGameplay> {
                                         );
                                       } else if (streamOngoing.streamLink !=
                                           '') {
-                                        print(
-                                            'spectating... ${streamOngoing.streamLink}');
                                         await FlutterWebBrowser.openWebPage(
                                           url: streamOngoing.streamLink,
                                           customTabsOptions: CustomTabsOptions(

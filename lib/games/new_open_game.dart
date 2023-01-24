@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 
+import 'dart:developer';
+
 import 'package:app_tournament/services/auth.dart';
 import 'package:app_tournament/services/firestore.dart';
 import 'package:app_tournament/services/models.dart';
@@ -31,6 +33,7 @@ class NewGamesList extends StatelessWidget {
   Widget build(BuildContext context) {
     final DarkModeProvider darkModeProvider =
         Provider.of<DarkModeProvider>(context);
+    final UserData userData = Provider.of<UserData>(context);
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection('alltournaments')
@@ -40,12 +43,15 @@ class NewGamesList extends StatelessWidget {
       builder: (_, AsyncSnapshot<QuerySnapshot> snapshot) {
         final user = AuthService().user!;
         final TextEditingController _addMoney = TextEditingController();
+        final TextEditingController _refereeController =
+            TextEditingController();
         if (snapshot.hasError) {
           return const ProgressAwesome();
         }
-        if (!snapshot.hasData) {
-          return const NotFoundAnimation(
-            text: 'No future games added yet.',
+        if (!snapshot.hasData || snapshot.data!.size == 0) {
+          return NotFoundAnimation(
+            text: 'No new games added yet.',
+            color: darkModeProvider.isDarkTheme ? Colors.white : Colors.black,
           );
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -309,114 +315,170 @@ class NewGamesList extends StatelessWidget {
                                                                           context)
                                                                       .viewInsets
                                                                       .bottom),
-                                                              child: SizedBox(
-                                                                height: 160,
-                                                                child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          8.0),
-                                                                  child: Column(
-                                                                    children: [
-                                                                      DesignText
-                                                                          .bold2(
-                                                                        'Add Your GamePlay Username',
-                                                                        fontWeight:
-                                                                            700,
-                                                                        fontSize:
-                                                                            14,
-                                                                        color: darkModeProvider.isDarkTheme
-                                                                            ? Colors.white
-                                                                            : null,
-                                                                      ),
-                                                                      const SizedBox(
-                                                                          height:
-                                                                              6),
-                                                                      TextField(
-                                                                        textCapitalization:
-                                                                            TextCapitalization.sentences,
-                                                                        controller:
-                                                                            _addMoney,
-                                                                        keyboardType:
-                                                                            TextInputType.text,
-                                                                        decoration:
-                                                                            const InputDecoration(
-                                                                          labelText:
-                                                                              "Your game username",
-                                                                          filled:
-                                                                              true,
-                                                                          floatingLabelBehavior:
-                                                                              FloatingLabelBehavior.auto,
-                                                                          contentPadding:
-                                                                              EdgeInsets.all(16),
-                                                                          prefixIcon:
-                                                                              Icon(
-                                                                            Ionicons.pricetags_outline,
-                                                                            color:
-                                                                                Colors.black,
-                                                                            size:
-                                                                                18,
-                                                                          ),
-                                                                          focusedBorder:
-                                                                              OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(color: Colors.blue, width: 2.0),
-                                                                          ),
-                                                                          enabledBorder:
-                                                                              OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(color: Colors.blue, width: 1.0),
+                                                              child:
+                                                                  SingleChildScrollView(
+                                                                child: SizedBox(
+                                                                  height: 300,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            8.0),
+                                                                    child:
+                                                                        Column(
+                                                                      children: [
+                                                                        DesignText
+                                                                            .bold2(
+                                                                          'Add Your GamePlay Username',
+                                                                          fontWeight:
+                                                                              700,
+                                                                          fontSize:
+                                                                              14,
+                                                                          color: darkModeProvider.isDarkTheme
+                                                                              ? Colors.white
+                                                                              : null,
+                                                                        ),
+                                                                        const SizedBox(
+                                                                            height:
+                                                                                6),
+                                                                        TextField(
+                                                                          textCapitalization:
+                                                                              TextCapitalization.sentences,
+                                                                          controller:
+                                                                              _addMoney,
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          decoration:
+                                                                              const InputDecoration(
+                                                                            labelText:
+                                                                                "Your game username",
+                                                                            filled:
+                                                                                true,
+                                                                            floatingLabelBehavior:
+                                                                                FloatingLabelBehavior.auto,
+                                                                            contentPadding:
+                                                                                EdgeInsets.all(16),
+                                                                            prefixIcon:
+                                                                                Icon(
+                                                                              Ionicons.pricetags_outline,
+                                                                              color: Colors.black,
+                                                                              size: 18,
+                                                                            ),
+                                                                            focusedBorder:
+                                                                                OutlineInputBorder(
+                                                                              borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                                                            ),
+                                                                            enabledBorder:
+                                                                                OutlineInputBorder(
+                                                                              borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                                                                            ),
                                                                           ),
                                                                         ),
-                                                                      ),
-                                                                      DesignButtons
-                                                                          .icon(
-                                                                        onPressed:
-                                                                            () async {
-                                                                          final DocumentReference
-                                                                              ref =
-                                                                              _db.collection('alltournaments').doc(game.tId);
-                                                                          final DocumentSnapshot
-                                                                              snap =
-                                                                              await ref.get();
-                                                                          final List
-                                                                              functionplayerGameIDforAddGame =
-                                                                              snap['joinedPlayers'].map((e) {
-                                                                            return e['playerGameID'];
-                                                                          }).toList();
-                                                                          if (!functionplayerGameIDforAddGame
-                                                                              .contains(_addMoney.text)) {
-                                                                            debugPrint(functionplayerGameID.toList().toString());
+                                                                        const SizedBox(
+                                                                            height:
+                                                                                6),
+                                                                        Visibility(
+                                                                          visible: userData
+                                                                              .referee
+                                                                              .isEmpty,
+                                                                          child:
+                                                                              Column(
+                                                                            children: [
+                                                                              DesignText.bold2(
+                                                                                'Person who referred you (optional)',
+                                                                                fontWeight: 700,
+                                                                                fontSize: 14,
+                                                                                color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                                                              ),
+                                                                              const SizedBox(height: 6),
+                                                                              TextField(
+                                                                                textCapitalization: TextCapitalization.sentences,
+                                                                                controller: _refereeController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                decoration: const InputDecoration(
+                                                                                  labelText: "Username of referee - Case sensitive",
+                                                                                  filled: true,
+                                                                                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                                                                  contentPadding: EdgeInsets.all(16),
+                                                                                  prefixIcon: Icon(
+                                                                                    Ionicons.pricetags_outline,
+                                                                                    color: Colors.black,
+                                                                                    size: 18,
+                                                                                  ),
+                                                                                  focusedBorder: OutlineInputBorder(
+                                                                                    borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                                                                  ),
+                                                                                  enabledBorder: OutlineInputBorder(
+                                                                                    borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          height:
+                                                                              6.0,
+                                                                        ),
+                                                                        DesignButtons
+                                                                            .icon(
+                                                                          onPressed:
+                                                                              () async {
+                                                                            final DocumentReference
+                                                                                ref =
+                                                                                _db.collection('alltournaments').doc(game.tId);
+                                                                            final DocumentSnapshot
+                                                                                snap =
+                                                                                await ref.get();
+                                                                            final List
+                                                                                functionplayerGameIDforAddGame =
+                                                                                snap['joinedPlayers'].map((e) {
+                                                                              return e['playerGameID'];
+                                                                            }).toList();
+                                                                            if (!functionplayerGameIDforAddGame.contains(_addMoney.text)) {
+                                                                              debugPrint(functionplayerGameID.toList().toString());
 
-                                                                            if (userData.coins - game.fee <=
-                                                                                -1) {
-                                                                              Fluttertoast.showToast(msg: "Not enough money in your wallet", toastLength: Toast.LENGTH_LONG);
+                                                                              if (userData.coins - game.fee <= -1) {
+                                                                                Fluttertoast.showToast(msg: "Not enough money in your wallet", toastLength: Toast.LENGTH_LONG);
+                                                                              } else if (_addMoney.text.isEmpty) {
+                                                                                Fluttertoast.showToast(msg: "Careful! Enter your username", toastLength: Toast.LENGTH_LONG);
+                                                                              } else if (userData.name == _refereeController.text) {
+                                                                                Fluttertoast.showToast(msg: "Oops, you can't refer yourself", toastLength: Toast.LENGTH_LONG);
+                                                                              } else {
+                                                                                await FirestoreService()
+                                                                                    .updateJoining(game, _addMoney.text)
+                                                                                    .whenComplete(() => FirestoreService().updateWallet(-game.fee, 'Join Match no: ${game.id}', DateTime.now().toString(), '', '', '', true))
+                                                                                    .whenComplete(() {
+                                                                                      if (_refereeController.text.isNotEmpty) {
+                                                                                        FirestoreService().payReferee((game.fee / 5).round(), _refereeController.text);
+                                                                                      }
+                                                                                    })
+                                                                                    .whenComplete(() => Navigator.pop(context))
+                                                                                    .whenComplete(() => Fluttertoast.showToast(msg: "SUCCESS", toastLength: Toast.LENGTH_LONG));
+                                                                              }
                                                                             } else {
-                                                                              await FirestoreService().updateJoining(game, _addMoney.text).whenComplete(() => FirestoreService().updateWallet(-game.fee, 'Join Match no: ${game.id}', DateTime.now().toString(), '', '', '', true)).whenComplete(() => FirestoreService().payReferee((game.fee / 5).round(), userData.referee)).whenComplete(() => Navigator.pop(context)).whenComplete(() => Fluttertoast.showToast(msg: "SUCCESS", toastLength: Toast.LENGTH_LONG));
+                                                                              Fluttertoast.showToast(msg: "${_addMoney.text} Already Added", toastLength: Toast.LENGTH_SHORT);
+                                                                              debugPrint('$functionplayerGameID Already Joined');
                                                                             }
-                                                                          } else {
-                                                                            Fluttertoast.showToast(
-                                                                                msg: "${_addMoney.text} Already Added",
-                                                                                toastLength: Toast.LENGTH_SHORT);
-                                                                            debugPrint('$functionplayerGameID Already Joined');
-                                                                          }
-                                                                        },
-                                                                        textLabel:
-                                                                            'Join ',
-                                                                        colorText: darkModeProvider.isDarkTheme
-                                                                            ? Colors.white
-                                                                            : null,
-                                                                        icon: const Icon(
-                                                                            Ionicons.add_circle_outline),
-                                                                      )
-                                                                    ],
+                                                                          },
+                                                                          textLabel:
+                                                                              'Join ',
+                                                                          colorText: darkModeProvider.isDarkTheme
+                                                                              ? Colors.white
+                                                                              : null,
+                                                                          icon:
+                                                                              const Icon(Ionicons.add_circle_outline),
+                                                                        )
+                                                                      ],
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ),
                                                             );
                                                           })
                                                   : Fluttertoast.showToast(
-                                                      msg: "Already Added",
+                                                      msg:
+                                                          "You already joined!",
                                                       toastLength:
                                                           Toast.LENGTH_SHORT);
                                             }
