@@ -136,37 +136,51 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderSide: BorderSide(color: Colors.purple, width: 2.0),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.0),
+                  borderSide: BorderSide(
+                      color: Colors.grey.withOpacity(0.5), width: 1.0),
                 ),
               ),
               keyboardType: TextInputType.number,
-            ),*/
-            // const SizedBox(height: 10),
-            // TextField(
-            //   controller: _referee,
-            //   style: GoogleFonts.nunito(
-            //     textStyle: const TextStyle(
-            //       fontSize: 20.0,
-            //     ),
-            //   ),
-            //   decoration: InputDecoration(
-            //     labelText: 'Referee username(optional)',
-            //     filled: true,
-            //     fillColor: Colors.transparent,
-            //     floatingLabelBehavior: FloatingLabelBehavior.never,
-            //     contentPadding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
-            //     focusedBorder: const OutlineInputBorder(
-            //       borderSide: BorderSide(color: Colors.purple, width: 2.0),
-            //     ),
-            //     enabledBorder: OutlineInputBorder(
-            //       borderSide: BorderSide(color: Colors.grey.withOpacity(0.5), width: 1.0),
-            //     ),
-            //   ),
-            //   keyboardType: TextInputType.name,
-            // ),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _referee,
+              style: GoogleFonts.nunito(
+                textStyle: const TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+              decoration: InputDecoration(
+                labelText: 'Referee username(optional)',
+                filled: true,
+                fillColor: Colors.transparent,
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+                contentPadding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.purple, width: 2.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Colors.grey.withOpacity(0.5), width: 1.0),
+                ),
+              ),
+              keyboardType: TextInputType.name,
+            ),
             // Please Remove or Comment if you don't want google Sign-in and Skip Sign-in
             // Start remove ---
-            const SizedBox(height: 6),
+            const SizedBox(height: 12),
+
+            //  Adding "OR" text for UI/UX
+            isPhoneSignin
+                ? Container()
+                : DesignText.bold1(
+                    AppInformation().orText,
+                    textAlign: TextAlign.center,
+                    fontSize: 18,
+                    color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                    fontWeight: 600,
+                  ),
+            const SizedBox(height: 12),
             !isPhoneSignin
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -271,7 +285,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 FirestoreService()
                                                     .phoneAuthProvider(
                                                         _otp.text,
-                                                        verificationCodeID!,
+                                                        verificationCodeID ==
+                                                                null
+                                                            ? ''
+                                                            : verificationCodeID!,
                                                         _referee.text);
                                                 Navigator.pop(context);
                                               },

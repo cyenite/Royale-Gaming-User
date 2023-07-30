@@ -7,7 +7,11 @@ import 'package:app_tournament/services/models.dart';
 import 'package:app_tournament/services/network.dart';
 import 'package:app_tournament/settings/wallet/payment.dart';
 import 'package:app_tournament/settings/wallet/profile_update.dart';
+
+import 'package:app_tournament/settings/wallet/referals_list.dart';
+
 import 'package:app_tournament/settings/wallet/referals.dart';
+
 import 'package:app_tournament/settings/wallet/transactions.dart';
 import 'package:app_tournament/settings/wallet/withdraw.dart';
 import 'package:app_tournament/ui/custom/custom_color.dart';
@@ -109,15 +113,12 @@ class _WalletState extends State<Wallet> {
                               : null,
                         ),
                         const SizedBox(height: 4),
-                        Visibility(
-                          visible: userData.referee != '',
-                          child: DesignText.caption(
-                            'Your Referee:  ' '${userData.referee}',
-                            color: darkModeProvider.isDarkTheme
-                                ? Colors.white
-                                : null,
-                            fontWeight: 500,
-                          ),
+                        DesignText.caption(
+                          'Your Referee:  ' '${userData.referee}',
+                          color: darkModeProvider.isDarkTheme
+                              ? Colors.white
+                              : null,
+                          fontWeight: 500,
                         ),
                         const SizedBox(height: 4),
                         DesignText.caption(
@@ -301,18 +302,33 @@ class _WalletState extends State<Wallet> {
                                                     .isNegative) {
                                                   int.parse(_amount.text) <=
                                                               userData.coins &&
-                                                          int.parse(_amount
-                                                                  .text) !=
+                                                          int.parse(_amount.text) !=
                                                               0
-                                                      ? _handleWithdrawService(
-                                                          phone: _withdrawWallet
-                                                              .text,
-                                                          amount: _amount.text)
+                                                      ? FirestoreService()
+                                                          .updateWallet(
+                                                              -int.parse(_amount.text)
+                                                                  .abs(),
+                                                              'Withdraw',
+                                                              DateTime.now()
+                                                                  .toString(),
+                                                              _goodName.text,
+                                                              _radioValue == 1
+                                                                  ? 'MPESA NUMBER'
+                                                                  : 'Paytm Number',
+                                                              _withdrawWallet
+                                                                  .text,
+                                                              false)
+                                                          .whenComplete(() => Fluttertoast.showToast(
+                                                              msg: "SUCCESS",
+                                                              toastLength: Toast
+                                                                  .LENGTH_SHORT))
+                                                          .whenComplete(() =>
+                                                              Navigator.pop(
+                                                                  context))
                                                       : Fluttertoast.showToast(
-                                                          msg:
-                                                              "Check on your amount",
-                                                          toastLength: Toast
-                                                              .LENGTH_SHORT);
+                                                          msg: "Balance Low",
+                                                          toastLength:
+                                                              Toast.LENGTH_SHORT);
                                                 } else {
                                                   Fluttertoast.showToast(
                                                       msg:
@@ -384,7 +400,8 @@ class _WalletState extends State<Wallet> {
                                         controller: _amount,
                                         decoration: const InputDecoration(
                                           labelText:
-                                              'Enter amount (No decimals)',
+                                              'Enter Amount (No decimals)',
+
                                           filled: true,
                                           floatingLabelBehavior:
                                               FloatingLabelBehavior.auto,
@@ -404,7 +421,8 @@ class _WalletState extends State<Wallet> {
                                       DesignButtons.icon(
                                         icon:
                                             const Icon(Ionicons.wallet_outline),
-                                        textLabel: 'Deposit',
+                                        textLabel: 'Add Money from MPESA',
+
                                         onPressed: () {
                                           openCheckout(user);
                                         },
@@ -523,6 +541,42 @@ class _WalletState extends State<Wallet> {
                         const SizedBox(width: 4),
                         DesignText.bold2(
                           "Transactions",
+                          letterSpacing: 0,
+                          color: darkModeProvider.isDarkTheme
+                              ? Colors.white
+                              : null,
+                        ),
+                      ],
+                    ),
+                    trailing: Icon(
+                      Icons.chevron_right,
+                      size: 20,
+                      color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                    ),
+                  ),
+                ),
+
+//******************************* */ Added code *********************
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (BuildContext context) =>
+                            const ReferalListScreen(),
+                      ),
+                    );
+                  },
+                  child: ListTile(
+                    dense: true,
+                    contentPadding: const EdgeInsets.all(0),
+                    visualDensity: VisualDensity.compact,
+                    title: Row(
+                      children: [
+                        const Icon(Icons.account_tree_outlined, size: 18),
+                        const SizedBox(width: 4),
+                        DesignText.bold2(
+                          "Referals",
                           letterSpacing: 0,
                           color: darkModeProvider.isDarkTheme
                               ? Colors.white
@@ -767,29 +821,7 @@ class _WalletState extends State<Wallet> {
       required String name,
       required String userId,
       required String phone}) async {
-    if (_mpesaPhone.text.length < 10) {
-      Fluttertoast.showToast(
-          msg: "Enter a valid phone number", toastLength: Toast.LENGTH_LONG);
-    } else if (int.parse(_amount.text) < 10) {
-      Fluttertoast.showToast(
-          msg: "Amount must be greater than Ksh. 10",
-          toastLength: Toast.LENGTH_LONG);
-    } else {
-      NetworkService().authorize().then(
-        (value) {
-          Navigator.pop(context);
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: ((context) => PaymentsPage(
-                  accessToken: value,
-                  amount: int.parse(_amount.text),
-                  phone: _mpesaPhone.text,
-                )),
-          ));
-        },
-      );
-    }
-
-    /*     final Customer customer =
+    final Customer customer =
         Customer(name: name, phoneNumber: phone, email: email);
     String transactionRef =
         '${userId}_${DateTime.now().millisecondsSinceEpoch}';
@@ -818,7 +850,23 @@ class _WalletState extends State<Wallet> {
                 toastLength: Toast.LENGTH_SHORT))
             .whenComplete(() => Navigator.pop(context));
       }
- */
+
+
+      ///Sample responses.
+      //{status: cancelled, success: false, transaction_id: null, tx_ref: 234dqq134}
+      //{status: successful, success: true, transaction_id: 795165020, tx_ref: 234dqfqe134}
+    } else {}
+  }
+
+  void _handlePaymentSuccess(String transactionId) {
+    FirestoreService()
+        .updateWallet(int.parse(_amount.text), 'Deposit ID: $transactionId',
+            DateTime.now().toString(), '', '', '', false)
+        .whenComplete(() => Fluttertoast.showToast(
+            msg: "SUCCESS SUCCESS: Your funds have been deposited",
+            toastLength: Toast.LENGTH_SHORT))
+        .whenComplete(() => Navigator.pop(context));
+
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {

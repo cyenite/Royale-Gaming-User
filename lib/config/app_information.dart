@@ -1,11 +1,12 @@
 class AppInformation {
   String joinTournament = 'Join Now!';
   String endTopic = 'Play!';
-  String appName = 'Royale Tournaments';
-  String appMainTitle = 'Royale Tournaments';
+  String appName = 'Royale Gaming';
+  String appMainTitle = 'Royale Gaming';
   String appSmallTitle =
-      'Do you love playing battle royale games and want to take your skills to the next level?\nJoin, play, dominate and earn money!\nSee you in the lobby ;)';
+      'Welcome gamer 😎, play your favourite games and earn money! 🤑';
   String onGoingGameplay = 'Ongoing Tournaments';
+  String orText = 'OR';
   static const String instructionText =
       '''1. Once you pay for a game, you will get access to the room ID when the game is marked as "ONGOING"
   2. To join a game, click on PLAY NOW or copy the room ID and password(If available).''';
