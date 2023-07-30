@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'models.g.dart';
@@ -10,8 +12,14 @@ class NewGames {
   final String img;
   final List<Tournaments> games;
 
-  NewGames({this.id = '', this.title = '', this.description = '', this.img = '', this.games = const []});
-  factory NewGames.fromJson(Map<String, dynamic> json) => _$NewGamesFromJson(json);
+  NewGames(
+      {this.id = '',
+      this.title = '',
+      this.description = '',
+      this.img = '',
+      this.games = const []});
+  factory NewGames.fromJson(Map<String, dynamic> json) =>
+      _$NewGamesFromJson(json);
   Map<String, dynamic> toJson() => _$NewGamesToJson(this);
 }
 
@@ -22,7 +30,12 @@ class Joined {
   final String description;
   final String img;
   final List<Tournaments> games;
-  Joined({this.id = '', this.title = '', this.description = '', this.img = '', this.games = const []});
+  Joined(
+      {this.id = '',
+      this.title = '',
+      this.description = '',
+      this.img = '',
+      this.games = const []});
   factory Joined.fromJson(Map<String, dynamic> json) => _$JoinedFromJson(json);
   Map<String, dynamic> toJson() => _$JoinedToJson(this);
 }
@@ -76,7 +89,8 @@ class Tournaments {
     this.joinedPlayers = const [],
     this.playerResults = const [],
   });
-  factory Tournaments.fromJson(Map<String, dynamic> json) => _$TournamentsFromJson(json);
+  factory Tournaments.fromJson(Map<String, dynamic> json) =>
+      _$TournamentsFromJson(json);
   Map<String, dynamic> toJson() => _$TournamentsToJson(this);
 }
 
@@ -94,7 +108,8 @@ class JoinedPlayers {
     this.playerTotalCoins = 0,
     this.winner = false,
   });
-  factory JoinedPlayers.fromJson(Map<String, dynamic> json) => _$JoinedPlayersFromJson(json);
+  factory JoinedPlayers.fromJson(Map<String, dynamic> json) =>
+      _$JoinedPlayersFromJson(json);
   Map<String, dynamic> toJson() => _$JoinedPlayersToJson(this);
 }
 
@@ -105,6 +120,7 @@ class UserData {
   String profile;
   String email;
   String referee;
+  int refereeBonus;
   int coins;
   int coinsWon;
   bool isDark;
@@ -121,11 +137,13 @@ class UserData {
     this.totalsignin = 0,
     this.coins = 0,
     this.coinsWon = 0,
+    this.refereeBonus = 0,
     this.referee = '',
     this.transaction = const [],
     this.joinedTournaments = const [],
   });
-  factory UserData.fromJson(Map<String, dynamic> json) => _$UserDataFromJson(json);
+  factory UserData.fromJson(Map<String, dynamic> json) =>
+      _$UserDataFromJson(json);
   Map<String, dynamic> toJson() => _$UserDataToJson(this);
 }
 
@@ -149,7 +167,8 @@ class Transaction {
     this.moneyRecNumber = '',
     this.pendingStatus = false,
   });
-  factory Transaction.fromJson(Map<String, dynamic> json) => _$TransactionFromJson(json);
+  factory Transaction.fromJson(Map<String, dynamic> json) =>
+      _$TransactionFromJson(json);
   Map<String, dynamic> toJson() => _$TransactionToJson(this);
 }
 
@@ -164,4 +183,11 @@ class FAQModel {
     this.isNew = false,
   });
   factory FAQModel.fromJson(Map<String, dynamic> json) => _$FAQFromJson(json);
+}
+
+enum PaymentStatus {
+  AUTHORIZED,
+  NOTIFICATION_SENT,
+  VERIFIED,
+  FAILED,
 }

@@ -11,7 +11,6 @@ import 'package:app_tournament/ui/theme/theme_provider.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -111,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
-            TextField(
+            /*TextField(
               controller: _phoneNumber,
               onChanged: (f) {
                 setState(() {
@@ -192,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           topRight: 0,
                           text: 'Sign In',
                           icon: Ionicons.logo_google,
-                          color: const Color.fromARGB(255, 225, 105, 6),
+                          color: Color.fromARGB(255, 225, 72, 6),
                           loginMethod: AuthService().googleLogin,
                         ),
                       ),
@@ -203,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           icon: Ionicons.id_card,
                           text: 'Skip',
                           loginMethod: AuthService().anonLogin,
-                          color: const Color.fromARGB(255, 0, 213, 11),
+                          color: Color.fromARGB(255, 0, 35, 213),
                         ),
                       ),
                     ],

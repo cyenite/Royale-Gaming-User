@@ -22,7 +22,8 @@ class FAQPage extends StatefulWidget {
 class _FAQPageState extends State<FAQPage> {
   @override
   Widget build(BuildContext context) {
-    final DarkModeProvider darkModeProvider = Provider.of<DarkModeProvider>(context);
+    final DarkModeProvider darkModeProvider =
+        Provider.of<DarkModeProvider>(context);
 
     ConnectionState refreshIndicator = ConnectionState.waiting;
     Future retry() async {
@@ -32,7 +33,10 @@ class _FAQPageState extends State<FAQPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(elevation: 2, title: const TextGradient(text: 'Frequently Asked Questions', appbarfontsize: 16)),
+      appBar: AppBar(
+          elevation: 2,
+          title: const TextGradient(
+              text: 'Frequently Asked Questions', appbarfontsize: 16)),
       body: RefreshIndicator(
         strokeWidth: 1.5,
         onRefresh: () async {
@@ -48,7 +52,8 @@ class _FAQPageState extends State<FAQPage> {
                     children: [
                       NotFoundAnimation(
                         text: 'No FAQs Yet',
-                        color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                        color:
+                            darkModeProvider.isDarkTheme ? Colors.white : null,
                       ),
                       const SizedBox(height: 30),
                       DesignButtons.icon(
@@ -56,7 +61,8 @@ class _FAQPageState extends State<FAQPage> {
                           await retry();
                         },
                         textLabel: 'Retry ',
-                        colorText: darkModeProvider.isDarkTheme ? Colors.white : null,
+                        colorText:
+                            darkModeProvider.isDarkTheme ? Colors.white : null,
                         icon: const Icon(Ionicons.refresh_circle_outline),
                       ),
                       const SizedBox(height: 30)
@@ -74,16 +80,25 @@ class _FAQPageState extends State<FAQPage> {
             } else if (snapshot.hasData) {
               List<FAQModel> streamFAQ = snapshot.data!;
               return ListView(
-                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics()),
                 primary: false,
                 padding: const EdgeInsets.all(6.0),
                 children: streamFAQ.map((streamFAQ) {
                   return FAQ(
                     question: streamFAQ.question,
-                    queStyle:
-                        TextStyle(color: darkModeProvider.isDarkTheme ? Colors.white : Colors.black, fontWeight: FontWeight.w500, fontSize: 16.0),
-                    ansStyle:
-                        TextStyle(color: darkModeProvider.isDarkTheme ? Colors.white : Colors.black, fontWeight: FontWeight.w400, fontSize: 12.0),
+                    queStyle: TextStyle(
+                        color: darkModeProvider.isDarkTheme
+                            ? Colors.white
+                            : Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16.0),
+                    ansStyle: TextStyle(
+                        color: darkModeProvider.isDarkTheme
+                            ? Colors.white
+                            : Colors.black,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12.0),
                     answer: streamFAQ.answer,
                     ansDecoration: const BoxDecoration(
                       color: Colors.transparent,

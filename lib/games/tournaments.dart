@@ -33,7 +33,8 @@ class NewGamesItem extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (BuildContext context) => TournamentsScreen(newGames: newGames),
+            builder: (BuildContext context) =>
+                TournamentsScreen(newGames: newGames),
           ),
         );
       },
@@ -65,7 +66,8 @@ class NewGamesItem extends StatelessWidget {
                 textLabel: newGames.title,
                 colorText: Colors.white,
                 // color: Colors.pinkAccent,
-                icon: const Icon(Ionicons.logo_google_playstore, color: Colors.white)),
+                icon: const Icon(Ionicons.logo_google_playstore,
+                    color: Colors.white)),
             Positioned(
               bottom: 10,
               right: 0,
@@ -131,13 +133,25 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
                   automaticIndicatorColorAdjustment: true,
                   tabs: [
                     Tab(
-                      child: DesignText.bold1("Upcoming", color: darkModeProvider.isDarkTheme ? Colors.white : null, fontWeight: 800),
+                      child: DesignText.bold1("Upcoming",
+                          color: darkModeProvider.isDarkTheme
+                              ? Colors.white
+                              : null,
+                          fontWeight: 800),
                     ),
                     Tab(
-                      child: DesignText.bold1("Ongoing", color: darkModeProvider.isDarkTheme ? Colors.white : null, fontWeight: 800),
+                      child: DesignText.bold1("Ongoing",
+                          color: darkModeProvider.isDarkTheme
+                              ? Colors.white
+                              : null,
+                          fontWeight: 800),
                     ),
                     Tab(
-                      child: DesignText.bold1("Results", color: darkModeProvider.isDarkTheme ? Colors.white : null, fontWeight: 800),
+                      child: DesignText.bold1("Results",
+                          color: darkModeProvider.isDarkTheme
+                              ? Colors.white
+                              : null,
+                          fontWeight: 800),
                     ),
                   ],
                 )
@@ -179,7 +193,9 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
                             children: [
                               NotFoundAnimation(
                                 text: 'No ongoing tournaments',
-                                color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                color: darkModeProvider.isDarkTheme
+                                    ? Colors.white
+                                    : null,
                               ),
                               const SizedBox(height: 30),
                               DesignButtons.icon(
@@ -187,8 +203,11 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
                                   await retry();
                                 },
                                 textLabel: 'Retry ',
-                                colorText: darkModeProvider.isDarkTheme ? Colors.white : null,
-                                icon: const Icon(Ionicons.refresh_circle_outline),
+                                colorText: darkModeProvider.isDarkTheme
+                                    ? Colors.white
+                                    : null,
+                                icon:
+                                    const Icon(Ionicons.refresh_circle_outline),
                               ),
                               const SizedBox(height: 30)
                             ],
@@ -205,22 +224,29 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
                     } else if (snapshot.hasData) {
                       List<Tournaments> streamOngoing = snapshot.data!;
                       return ListView(
-                        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                        physics: const BouncingScrollPhysics(
+                            parent: AlwaysScrollableScrollPhysics()),
                         primary: false,
                         padding: const EdgeInsets.all(6.0),
                         children: streamOngoing.map((streamOngoing) {
-                          final List uidContains = streamOngoing.joinedPlayers.map((e) {
+                          final List uidContains =
+                              streamOngoing.joinedPlayers.map((e) {
                             return e.uid;
                           }).toList();
-                          final String timeConvert = DateFormat.yMMMd().add_jm().format(DateTime.parse(streamOngoing.gamePlayTime));
+                          final String timeConvert = DateFormat.yMMMd()
+                              .add_jm()
+                              .format(
+                                  DateTime.parse(streamOngoing.gamePlayTime));
                           final user = AuthService().user!;
-                          final bool checkJoined = uidContains.contains(user.uid);
+                          final bool checkJoined =
+                              uidContains.contains(user.uid);
 
                           return GestureDetector(
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (BuildContext context) => JoinDetails(
+                                  builder: (BuildContext context) =>
+                                      JoinDetails(
                                     tournamentsView: streamOngoing,
                                   ),
                                 ),
@@ -230,7 +256,8 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
                                 tag: streamOngoing.image,
                                 child: Card(
                                   clipBehavior: Clip.antiAlias,
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(4)),
                                   elevation: 2,
                                   margin: const EdgeInsets.all(4),
                                   child: Column(
@@ -256,7 +283,8 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
                                         ],
                                       ),
                                       Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Expanded(
                                             child: Padding(
@@ -265,23 +293,30 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
                                                 streamOngoing.title,
                                                 fontSize: 15,
                                                 fontWeight: 700,
-                                                color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                                color:
+                                                    darkModeProvider.isDarkTheme
+                                                        ? Colors.white
+                                                        : null,
                                               ),
                                             ),
                                           ),
                                         ],
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 4, right: 4),
+                                        padding: const EdgeInsets.only(
+                                            left: 4, right: 4),
                                         child: Row(
                                           children: [
                                             Expanded(
                                               child: DesignButtons.icon(
                                                   onPressed: () {},
-                                                  textLabel: streamOngoing.teamType,
-                                                  color: const Color.fromARGB(255, 255, 212, 155),
+                                                  textLabel:
+                                                      streamOngoing.teamType,
+                                                  color: const Color.fromARGB(
+                                                      255, 255, 212, 155),
                                                   icon: const Icon(
-                                                    Ionicons.game_controller_outline,
+                                                    Ionicons
+                                                        .game_controller_outline,
                                                     size: 18,
                                                   )),
                                             ),
@@ -289,10 +324,15 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
                                             Expanded(
                                               child: DesignButtons.icon(
                                                   onPressed: () {},
-                                                  textLabel: streamOngoing.mapType,
-                                                  colorText: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                                  textLabel:
+                                                      streamOngoing.mapType,
+                                                  colorText: darkModeProvider
+                                                          .isDarkTheme
+                                                      ? Colors.white
+                                                      : null,
                                                   icon: const Icon(
-                                                    Ionicons.navigate_circle_outline,
+                                                    Ionicons
+                                                        .navigate_circle_outline,
                                                     size: 18,
                                                   )),
                                             ),
@@ -300,39 +340,53 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 4, right: 4),
+                                        padding: const EdgeInsets.only(
+                                            left: 4, right: 4),
                                         child: Table(
                                           border: TableBorder.all(
-                                            color: Colors.black.withOpacity(0.1),
+                                            color:
+                                                Colors.black.withOpacity(0.1),
                                           ),
                                           children: [
                                             TableRow(children: [
                                               Padding(
-                                                padding: const EdgeInsets.all(2),
+                                                padding:
+                                                    const EdgeInsets.all(2),
                                                 child: DesignText.bold2(
                                                   timeConvert,
                                                   textAlign: TextAlign.center,
                                                   fontSize: 14,
                                                   fontWeight: 700,
-                                                  color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                                  color: darkModeProvider
+                                                          .isDarkTheme
+                                                      ? Colors.white
+                                                      : null,
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(2),
+                                                padding:
+                                                    const EdgeInsets.all(2),
                                                 child: DesignText.bold2(
                                                   'Winner: Ksh.${streamOngoing.tournamentWinRewards}',
                                                   fontSize: 14,
                                                   fontWeight: 700,
-                                                  color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                                  color: darkModeProvider
+                                                          .isDarkTheme
+                                                      ? Colors.white
+                                                      : null,
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.all(2),
+                                                padding:
+                                                    const EdgeInsets.all(2),
                                                 child: DesignText.bold2(
                                                   'Per-kill: Ksh. ${streamOngoing.tournamentSingleRewards}',
                                                   fontSize: 14,
                                                   fontWeight: 700,
-                                                  color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                                  color: darkModeProvider
+                                                          .isDarkTheme
+                                                      ? Colors.white
+                                                      : null,
                                                 ),
                                               )
                                             ]),
@@ -342,60 +396,105 @@ class _TournamentsScreenState extends State<TournamentsScreen> {
                                       Row(
                                         children: [
                                           Flexible(
-                                            child: ProgressBar(maxPlayers: streamOngoing.maxPlayers, joinedPlayers: streamOngoing.joinedPlayersCount),
+                                            child: ProgressBar(
+                                                maxPlayers:
+                                                    streamOngoing.maxPlayers,
+                                                joinedPlayers: streamOngoing
+                                                    .joinedPlayersCount),
                                           ),
                                           DesignButtons.customRadius(
                                             // elevated: true,
-                                            color: !checkJoined ? DesignColor.blueSmart : Colors.pinkAccent,
+                                            color: !checkJoined
+                                                ? DesignColor.blueSmart
+                                                : Colors.pinkAccent,
                                             onPressed: () async {
                                               if (checkJoined) {
-                                                await FlutterWebBrowser.openWebPage(
+                                                await FlutterWebBrowser
+                                                    .openWebPage(
                                                   url: streamOngoing.link,
-                                                  customTabsOptions: CustomTabsOptions(
-                                                    colorScheme:
-                                                        darkModeProvider.isDarkTheme ? CustomTabsColorScheme.dark : CustomTabsColorScheme.light,
-                                                    toolbarColor: darkModeProvider.isDarkTheme ? DesignColor.blackFront : Colors.white,
-                                                    shareState: CustomTabsShareState.off,
+                                                  customTabsOptions:
+                                                      CustomTabsOptions(
+                                                    colorScheme: darkModeProvider
+                                                            .isDarkTheme
+                                                        ? CustomTabsColorScheme
+                                                            .dark
+                                                        : CustomTabsColorScheme
+                                                            .light,
+                                                    toolbarColor: darkModeProvider
+                                                            .isDarkTheme
+                                                        ? DesignColor.blackFront
+                                                        : Colors.white,
+                                                    shareState:
+                                                        CustomTabsShareState
+                                                            .off,
                                                     instantAppsEnabled: false,
                                                     showTitle: true,
                                                     urlBarHidingEnabled: true,
                                                   ),
-                                                  safariVCOptions: const SafariViewControllerOptions(
+                                                  safariVCOptions:
+                                                      const SafariViewControllerOptions(
                                                     barCollapsingEnabled: true,
-                                                    dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
-                                                    modalPresentationCapturesStatusBarAppearance: true,
+                                                    dismissButtonStyle:
+                                                        SafariViewControllerDismissButtonStyle
+                                                            .close,
+                                                    modalPresentationCapturesStatusBarAppearance:
+                                                        true,
                                                   ),
                                                 );
-                                              } else if (streamOngoing.streamLink != '') {
+                                              } else if (streamOngoing
+                                                      .streamLink !=
+                                                  '') {
                                                 if (kDebugMode) {
-                                                  print('spectating... ${streamOngoing.streamLink}');
+                                                  print(
+                                                      'spectating... ${streamOngoing.streamLink}');
                                                 }
-                                                await FlutterWebBrowser.openWebPage(
+                                                await FlutterWebBrowser
+                                                    .openWebPage(
                                                   url: streamOngoing.streamLink,
-                                                  customTabsOptions: CustomTabsOptions(
-                                                    colorScheme:
-                                                        darkModeProvider.isDarkTheme ? CustomTabsColorScheme.dark : CustomTabsColorScheme.light,
-                                                    toolbarColor: darkModeProvider.isDarkTheme ? DesignColor.blackAppbar : Colors.white,
-                                                    shareState: CustomTabsShareState.off,
+                                                  customTabsOptions:
+                                                      CustomTabsOptions(
+                                                    colorScheme: darkModeProvider
+                                                            .isDarkTheme
+                                                        ? CustomTabsColorScheme
+                                                            .dark
+                                                        : CustomTabsColorScheme
+                                                            .light,
+                                                    toolbarColor:
+                                                        darkModeProvider
+                                                                .isDarkTheme
+                                                            ? DesignColor
+                                                                .blackAppbar
+                                                            : Colors.white,
+                                                    shareState:
+                                                        CustomTabsShareState
+                                                            .off,
                                                     instantAppsEnabled: false,
                                                     showTitle: true,
                                                     urlBarHidingEnabled: true,
                                                   ),
-                                                  safariVCOptions: const SafariViewControllerOptions(
+                                                  safariVCOptions:
+                                                      const SafariViewControllerOptions(
                                                     barCollapsingEnabled: true,
-                                                    dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
-                                                    modalPresentationCapturesStatusBarAppearance: true,
+                                                    dismissButtonStyle:
+                                                        SafariViewControllerDismissButtonStyle
+                                                            .close,
+                                                    modalPresentationCapturesStatusBarAppearance:
+                                                        true,
                                                   ),
                                                 );
                                               }
                                             },
-                                            textLabel: checkJoined ? 'Play Now' : 'Spectate',
+                                            textLabel: checkJoined
+                                                ? 'Play Now'
+                                                : 'Spectate',
                                             colorText: Colors.white,
                                             // bottomLeft: 0,
                                             // bottomRight: 0,
                                             // topLeft: 0,
                                             icon: Icon(
-                                              checkJoined ? Ionicons.play_circle_sharp : Ionicons.eye_outline,
+                                              checkJoined
+                                                  ? Ionicons.play_circle_sharp
+                                                  : Ionicons.eye_outline,
                                               color: Colors.white,
                                               size: 18,
                                             ),

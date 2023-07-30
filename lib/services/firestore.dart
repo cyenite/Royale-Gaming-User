@@ -70,6 +70,15 @@ class FirestoreService {
     return newGames.toList();
   }
 
+// Get referrals for a user
+  Future<List<UserData>> getReferrals(String username) async {
+    var ref = _db.collection('usersdata').where('referee', isEqualTo: username);
+    var snapshot = await ref.get();
+    var data = snapshot.docs.map((s) => s.data());
+    var referrals = data.map((d) => UserData.fromJson(d));
+    return referrals.toList();
+  }
+
   Future<List<Tournaments>> getAllTournaments(String tId, String status) async {
     var ref = _db
         .collection('alltournaments')
@@ -184,15 +193,20 @@ class FirestoreService {
     int amount,
     String referee,
   ) {
+    var user = AuthService().user!;
     var data = {
       'coins': FieldValue.increment(amount),
     };
     var ref =
         _db.collection('usersdata').where('name', isEqualTo: referee).get();
+    var userRef = _db.collection('usersdata').doc(user.uid);
     ref.then((value) {
       if (value.docs.isNotEmpty) {
         return value.docs.first.reference.set(data, SetOptions(merge: true));
       }
+    }).whenComplete(() {
+      userRef.set({'referee': referee, 'refereeBonus': amount},
+          SetOptions(merge: true));
     });
     return Future(() => null);
   }
@@ -248,7 +262,7 @@ class FirestoreService {
     DocumentSnapshot snap = await ref.get();
     var data = {
       'totalsignin': FieldValue.increment(1),
-      'name': 'Update Your Username',
+      'name': 'anonymous',
       'profile': AppInformation().userProfile,
       'email': user.phoneNumber,
       'isDark': false,

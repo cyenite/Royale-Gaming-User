@@ -24,16 +24,17 @@ class JoinedMembers extends StatelessWidget {
             const MembersCard(membersName: "Joined Members", index: '#'),
             Expanded(
               child: ListView.builder(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: joinedPlayers.joinedPlayers.length,
-                  itemBuilder: (context, index) {
-                    List<JoinedPlayers> data =
-                        joinedPlayers.joinedPlayers.map((e) => e).toList();
-                    return MembersCard(
-                        index: (index + 1).toString(),
-                        membersName: data[index].playerGameID);
-                  }),
+                physics: const AlwaysScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: joinedPlayers.joinedPlayers.length,
+                itemBuilder: (context, index) {
+                  List<JoinedPlayers> data =
+                      joinedPlayers.joinedPlayers.map((e) => e).toList();
+                  return MembersCard(
+                      index: (index + 1).toString(),
+                      membersName: data[index].playerGameID);
+                },
+              ),
             )
           ],
         ),

@@ -25,7 +25,8 @@ class NewCompleted extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final DarkModeProvider darkModeProvider = Provider.of<DarkModeProvider>(context);
+    final DarkModeProvider darkModeProvider =
+        Provider.of<DarkModeProvider>(context);
     return FutureBuilder<List<Tournaments>>(
       initialData: [Tournaments()],
       future: FirestoreService().getAllTournaments(newGames.id, 'completed'),
@@ -42,19 +43,23 @@ class NewCompleted extends StatelessWidget {
           return const AnimateShimmer();
         } else {
           return ListView(
-            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics()),
             primary: false,
             children: [
               Column(
                 verticalDirection: VerticalDirection.up,
                 children: snapshot.data!.map(
                   (game) {
-                    final String timeConvert = DateFormat.yMMMd().add_jm().format(DateTime.parse(game.gamePlayTime));
+                    final String timeConvert = DateFormat.yMMMd()
+                        .add_jm()
+                        .format(DateTime.parse(game.gamePlayTime));
                     return GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (BuildContext context) => JoinDetails(tournamentsView: game),
+                            builder: (BuildContext context) =>
+                                JoinDetails(tournamentsView: game),
                           ),
                         );
                       },
@@ -62,7 +67,8 @@ class NewCompleted extends StatelessWidget {
                         tag: game.image,
                         child: Card(
                           clipBehavior: Clip.antiAlias,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4)),
                           elevation: 2,
                           margin: const EdgeInsets.all(4),
                           child: Column(
@@ -97,21 +103,25 @@ class NewCompleted extends StatelessWidget {
                                         game.title,
                                         fontSize: 15,
                                         fontWeight: 700,
-                                        color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                        color: darkModeProvider.isDarkTheme
+                                            ? Colors.white
+                                            : null,
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 4, right: 4),
+                                padding:
+                                    const EdgeInsets.only(left: 4, right: 4),
                                 child: Row(
                                   children: [
                                     Expanded(
                                       child: DesignButtons.icon(
                                           onPressed: () {},
                                           textLabel: game.teamType,
-                                          color: const Color.fromARGB(255, 255, 212, 155),
+                                          color: const Color.fromARGB(
+                                              255, 255, 212, 155),
                                           icon: const Icon(
                                             Ionicons.game_controller_outline,
                                             size: 18,
@@ -122,7 +132,10 @@ class NewCompleted extends StatelessWidget {
                                       child: DesignButtons.icon(
                                           onPressed: () {},
                                           textLabel: game.mapType,
-                                          colorText: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                          colorText:
+                                              darkModeProvider.isDarkTheme
+                                                  ? Colors.white
+                                                  : null,
                                           icon: const Icon(
                                             Ionicons.navigate_circle_outline,
                                             size: 18,
@@ -132,7 +145,8 @@ class NewCompleted extends StatelessWidget {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 4, right: 4),
+                                padding:
+                                    const EdgeInsets.only(left: 4, right: 4),
                                 child: Table(
                                   border: TableBorder.all(
                                     color: Colors.black.withOpacity(0.1),
@@ -143,7 +157,9 @@ class NewCompleted extends StatelessWidget {
                                         padding: const EdgeInsets.all(2),
                                         child: DesignText.bold2(
                                           timeConvert,
-                                          color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                          color: darkModeProvider.isDarkTheme
+                                              ? Colors.white
+                                              : null,
                                           textAlign: TextAlign.center,
                                           fontSize: 14,
                                           fontWeight: 700,
@@ -154,7 +170,9 @@ class NewCompleted extends StatelessWidget {
                                         child: DesignText.bold2(
                                           'Winner: Ksh.${game.tournamentWinRewards}',
                                           fontSize: 14,
-                                          color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                          color: darkModeProvider.isDarkTheme
+                                              ? Colors.white
+                                              : null,
                                           fontWeight: 700,
                                         ),
                                       ),
@@ -162,7 +180,9 @@ class NewCompleted extends StatelessWidget {
                                         padding: const EdgeInsets.all(2),
                                         child: DesignText.bold2(
                                           'Per-kill: Ksh. ${game.tournamentSingleRewards}',
-                                          color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                          color: darkModeProvider.isDarkTheme
+                                              ? Colors.white
+                                              : null,
                                           fontSize: 14,
                                           fontWeight: 700,
                                         ),
@@ -174,20 +194,27 @@ class NewCompleted extends StatelessWidget {
                               Row(
                                 children: [
                                   Flexible(
-                                    child: ProgressBar(maxPlayers: game.maxPlayers, joinedPlayers: game.joinedPlayersCount),
+                                    child: ProgressBar(
+                                        maxPlayers: game.maxPlayers,
+                                        joinedPlayers: game.joinedPlayersCount),
                                   ),
                                   DesignButtons.icon(
                                     onPressed: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           fullscreenDialog: true,
-                                          builder: (BuildContext context) => TournamentResults(tournaments: game),
+                                          builder: (BuildContext context) =>
+                                              TournamentResults(
+                                                  tournaments: game),
                                         ),
                                       );
                                     },
                                     textLabel: 'Results',
-                                    colorText: darkModeProvider.isDarkTheme ? Colors.white : null,
-                                    icon: const Icon(Ionicons.play_forward_circle_outline),
+                                    colorText: darkModeProvider.isDarkTheme
+                                        ? Colors.white
+                                        : null,
+                                    icon: const Icon(
+                                        Ionicons.play_forward_circle_outline),
                                   ),
                                   const SizedBox(width: 4)
                                 ],

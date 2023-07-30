@@ -51,7 +51,7 @@
 //                     const SizedBox(height: 20),
 //                     DesignButtons.icon(
 //                       icon: const Icon(Ionicons.wallet_outline),
-//                       textLabel: 'ADD Money', 
+//                       textLabel: 'ADD Money',
 //                       onPressed: () {
 //                         FirestoreService().updateWallet(
 //                           int.parse(_addAmount.text),

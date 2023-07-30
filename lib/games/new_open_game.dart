@@ -1,4 +1,6 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
+
+import 'dart:developer';
 
 import 'package:app_tournament/services/auth.dart';
 import 'package:app_tournament/services/firestore.dart';
@@ -29,45 +31,67 @@ class NewGamesList extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final DarkModeProvider darkModeProvider = Provider.of<DarkModeProvider>(context);
-    return FutureBuilder<List<Tournaments>>(
-      initialData: [Tournaments()],
-      future: FirestoreService().getAllTournaments(newGames.id, 'new'),
-      builder: (context, snapshot) {
+    final DarkModeProvider darkModeProvider =
+        Provider.of<DarkModeProvider>(context);
+    final UserData userData = Provider.of<UserData>(context);
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection('alltournaments')
+          .where('id', isEqualTo: newGames.id)
+          .where('status', isEqualTo: 'new')
+          .snapshots(),
+      builder: (_, AsyncSnapshot<QuerySnapshot> snapshot) {
         final user = AuthService().user!;
         final TextEditingController _addMoney = TextEditingController();
+        final TextEditingController _refereeController =
+            TextEditingController();
         if (snapshot.hasError) {
           return const ProgressAwesome();
         }
-        if (snapshot.data!.isEmpty) {
-          return const NotFoundAnimation(
-            text: 'No future games added yet.',
+        if (!snapshot.hasData || snapshot.data!.size == 0) {
+          return NotFoundAnimation(
+            text: 'No new games added yet.',
+            color: darkModeProvider.isDarkTheme ? Colors.white : Colors.black,
           );
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const AnimateShimmer();
         } else {
+          var newGames = snapshot.data!.docs;
           return ListView(
-            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics()),
             primary: false,
             children: [
               Column(
                 verticalDirection: VerticalDirection.up,
-                children: snapshot.data!.map(
-                  (game) {
+                children: newGames.map(
+                  (snapData) {
+                    Tournaments game = Tournaments.fromJson(
+                        snapData.data() as Map<String, dynamic>);
                     return StreamProvider(
-                      create: (context) => FirestoreService().streamAlltournaments(game.tId),
+                      create: (context) =>
+                          FirestoreService().streamAlltournaments(game.tId),
                       catchError: (context, error) => Tournaments(),
                       initialData: Tournaments(),
                       child: Builder(builder: (context) {
-                        final tournamentsStream = Provider.of<Tournaments>(context);
-                        final List uidContains = tournamentsStream.joinedPlayers.map((e) {
+                        final tournamentsStream =
+                            Provider.of<Tournaments>(context);
+                        final List uidContains =
+                            tournamentsStream.joinedPlayers.map((e) {
                           return e.uid;
                         }).toList();
-                        final String timeConvert = DateFormat.yMMMd().add_jm().format(DateTime.parse(tournamentsStream.gamePlayTime));
-                        final UserData userData = Provider.of<UserData>(context);
+                        final String timeConvert = DateFormat.yMMMd()
+                            .add_jm()
+                            .format(
+                                DateTime.parse(tournamentsStream.gamePlayTime));
+                        final UserData userData =
+                            Provider.of<UserData>(context);
                         final bool checkJoined = uidContains.contains(user.uid);
-                        final bool checkMaxPlayers = tournamentsStream.joinedPlayersCount >= tournamentsStream.maxPlayers && !checkJoined;
+                        final bool checkMaxPlayers =
+                            tournamentsStream.joinedPlayersCount >=
+                                    tournamentsStream.maxPlayers &&
+                                !checkJoined;
                         return GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(
@@ -82,7 +106,8 @@ class NewGamesList extends StatelessWidget {
                             tag: game.image,
                             child: Card(
                               clipBehavior: Clip.antiAlias,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4)),
                               elevation: 2,
                               margin: const EdgeInsets.all(4),
                               child: Column(
@@ -108,14 +133,17 @@ class NewGamesList extends StatelessWidget {
                                     ],
                                   ),
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Expanded(
                                         child: Padding(
                                           padding: const EdgeInsets.all(1),
                                           child: DesignText.bold2(
                                             game.title,
-                                            color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                            color: darkModeProvider.isDarkTheme
+                                                ? Colors.white
+                                                : null,
                                             fontSize: 15,
                                             fontWeight: 700,
                                           ),
@@ -124,16 +152,19 @@ class NewGamesList extends StatelessWidget {
                                     ],
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 4, right: 4),
+                                    padding: const EdgeInsets.only(
+                                        left: 4, right: 4),
                                     child: Row(
                                       children: [
                                         Expanded(
                                           child: DesignButtons.icon(
                                               onPressed: () {},
                                               textLabel: game.teamType,
-                                              color: const Color.fromARGB(255, 255, 212, 155),
+                                              color: const Color.fromARGB(
+                                                  255, 255, 212, 155),
                                               icon: const Icon(
-                                                Ionicons.game_controller_outline,
+                                                Ionicons
+                                                    .game_controller_outline,
                                                 size: 18,
                                               )),
                                         ),
@@ -142,9 +173,13 @@ class NewGamesList extends StatelessWidget {
                                           child: DesignButtons.icon(
                                               onPressed: () {},
                                               textLabel: game.mapType,
-                                              colorText: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                              colorText:
+                                                  darkModeProvider.isDarkTheme
+                                                      ? Colors.white
+                                                      : null,
                                               icon: const Icon(
-                                                Ionicons.navigate_circle_outline,
+                                                Ionicons
+                                                    .navigate_circle_outline,
                                                 size: 18,
                                               )),
                                         ),
@@ -152,7 +187,8 @@ class NewGamesList extends StatelessWidget {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 4, right: 4),
+                                    padding: const EdgeInsets.only(
+                                        left: 4, right: 4),
                                     child: Table(
                                       border: TableBorder.all(
                                         color: Colors.black.withOpacity(0.1),
@@ -163,7 +199,10 @@ class NewGamesList extends StatelessWidget {
                                             padding: const EdgeInsets.all(2),
                                             child: DesignText.bold2(
                                               timeConvert,
-                                              color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                              color:
+                                                  darkModeProvider.isDarkTheme
+                                                      ? Colors.white
+                                                      : null,
                                               textAlign: TextAlign.center,
                                               fontSize: 14,
                                               fontWeight: 700,
@@ -174,7 +213,10 @@ class NewGamesList extends StatelessWidget {
                                             child: DesignText.bold2(
                                               'Winner: Ksh.${game.tournamentWinRewards}',
                                               fontSize: 14,
-                                              color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                              color:
+                                                  darkModeProvider.isDarkTheme
+                                                      ? Colors.white
+                                                      : null,
                                               fontWeight: 700,
                                             ),
                                           ),
@@ -183,7 +225,10 @@ class NewGamesList extends StatelessWidget {
                                             child: DesignText.bold2(
                                               'Per-kill: Ksh.${game.tournamentSingleRewards}',
                                               fontSize: 14,
-                                              color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                              color:
+                                                  darkModeProvider.isDarkTheme
+                                                      ? Colors.white
+                                                      : null,
                                               fontWeight: 700,
                                             ),
                                           )
@@ -194,142 +239,266 @@ class NewGamesList extends StatelessWidget {
                                   Row(
                                     children: [
                                       Flexible(
-                                        child: ProgressBar(maxPlayers: game.maxPlayers, joinedPlayers: game.joinedPlayersCount),
+                                        child: ProgressBar(
+                                            maxPlayers: game.maxPlayers,
+                                            joinedPlayers:
+                                                game.joinedPlayersCount),
                                       ),
                                       DesignButtons.customRadius(
                                           // elevated: true,
-                                          color: !checkJoined ? const Color.fromARGB(255, 0, 61, 167) : Colors.pinkAccent,
+                                          color: !checkJoined
+                                              ? const Color.fromARGB(
+                                                  255, 0, 61, 167)
+                                              : Colors.pinkAccent,
                                           onPressed: () async {
-                                            if (tournamentsStream.status == 'ongoing') {
-                                              Fluttertoast.showToast(msg: "Go to Play Now Section", toastLength: Toast.LENGTH_SHORT);
+                                            if (tournamentsStream.status ==
+                                                'ongoing') {
+                                              Fluttertoast.showToast(
+                                                  msg: "Go to Play Now Section",
+                                                  toastLength:
+                                                      Toast.LENGTH_SHORT);
                                             } else {
-                                              final FirebaseFirestore _db = FirebaseFirestore.instance;
-                                              final DocumentReference ref1 = _db.collection('alltournaments').doc(game.tId);
-                                              final DocumentSnapshot snapShots = await ref1.get();
-                                              final List functionplayerGameID = snapShots['joinedPlayers'].map((e) {
+                                              final FirebaseFirestore _db =
+                                                  FirebaseFirestore.instance;
+                                              final DocumentReference ref1 = _db
+                                                  .collection('alltournaments')
+                                                  .doc(game.tId);
+                                              final DocumentSnapshot snapShots =
+                                                  await ref1.get();
+                                              final List functionplayerGameID =
+                                                  snapShots['joinedPlayers']
+                                                      .map((e) {
                                                 return e['playerGameID'];
                                               }).toList();
-                                              final List functionuidContains = snapShots['joinedPlayers'].map((e) {
+                                              final List functionuidContains =
+                                                  snapShots['joinedPlayers']
+                                                      .map((e) {
                                                 return e['uid'];
                                               }).toList();
-                                              final bool functioncheckJoined = functionuidContains.contains(user.uid);
-                                              final bool functioncheckMaxPlayers =
-                                                  snapShots['joinedPlayersCount'] >= game.maxPlayers && !functioncheckJoined;
-                                              if (!functionplayerGameID.contains(_addMoney.text)) {
-                                                debugPrint(functionplayerGameID.toString());
+                                              final bool functioncheckJoined =
+                                                  functionuidContains
+                                                      .contains(user.uid);
+                                              final bool
+                                                  functioncheckMaxPlayers =
+                                                  snapShots['joinedPlayersCount'] >=
+                                                          game.maxPlayers &&
+                                                      !functioncheckJoined;
+                                              if (!functionplayerGameID
+                                                  .contains(_addMoney.text)) {
+                                                debugPrint(functionplayerGameID
+                                                    .toString());
                                               } else {
-                                                debugPrint('$functionplayerGameID no else');
+                                                debugPrint(
+                                                    '$functionplayerGameID no else');
                                               }
 
                                               !functioncheckJoined
                                                   ? functioncheckMaxPlayers
-                                                      ? Fluttertoast.showToast(msg: "Tournament Full", toastLength: Toast.LENGTH_SHORT)
+                                                      ? Fluttertoast.showToast(
+                                                          msg:
+                                                              "Tournament Full",
+                                                          toastLength: Toast
+                                                              .LENGTH_SHORT)
                                                       : showModalBottomSheet(
                                                           shape: const RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.vertical(top: Radius.circular(6))),
+                                                              borderRadius:
+                                                                  BorderRadius.vertical(
+                                                                      top: Radius
+                                                                          .circular(
+                                                                              6))),
                                                           context: context,
-                                                          builder: (BuildContext context) {
+                                                          builder: (BuildContext
+                                                              context) {
                                                             return Padding(
-                                                              padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                                                              child: SizedBox(
-                                                                height: 160,
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets.all(8.0),
-                                                                  child: Column(
-                                                                    children: [
-                                                                      DesignText.bold2(
-                                                                        'Add Your GamePlay Username',
-                                                                        fontWeight: 700,
-                                                                        fontSize: 14,
-                                                                        color: darkModeProvider.isDarkTheme ? Colors.white : null,
-                                                                      ),
-                                                                      const SizedBox(height: 6),
-                                                                      TextField(
-                                                                        textCapitalization: TextCapitalization.sentences,
-                                                                        controller: _addMoney,
-                                                                        keyboardType: TextInputType.text,
-                                                                        decoration: const InputDecoration(
-                                                                          labelText: "Your game username",
-                                                                          filled: true,
-                                                                          floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                                                          contentPadding: EdgeInsets.all(16),
-                                                                          prefixIcon: Icon(
-                                                                            Ionicons.pricetags_outline,
-                                                                            color: Colors.black,
-                                                                            size: 18,
-                                                                          ),
-                                                                          focusedBorder: OutlineInputBorder(
-                                                                            borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                                                                          ),
-                                                                          enabledBorder: OutlineInputBorder(
-                                                                            borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                                                              padding: EdgeInsets.only(
+                                                                  bottom: MediaQuery.of(
+                                                                          context)
+                                                                      .viewInsets
+                                                                      .bottom),
+                                                              child:
+                                                                  SingleChildScrollView(
+                                                                child: SizedBox(
+                                                                  height: 300,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            8.0),
+                                                                    child:
+                                                                        Column(
+                                                                      children: [
+                                                                        DesignText
+                                                                            .bold2(
+                                                                          'Add Your GamePlay Username',
+                                                                          fontWeight:
+                                                                              700,
+                                                                          fontSize:
+                                                                              14,
+                                                                          color: darkModeProvider.isDarkTheme
+                                                                              ? Colors.white
+                                                                              : null,
+                                                                        ),
+                                                                        const SizedBox(
+                                                                            height:
+                                                                                6),
+                                                                        TextField(
+                                                                          textCapitalization:
+                                                                              TextCapitalization.sentences,
+                                                                          controller:
+                                                                              _addMoney,
+                                                                          keyboardType:
+                                                                              TextInputType.text,
+                                                                          decoration:
+                                                                              const InputDecoration(
+                                                                            labelText:
+                                                                                "Your game username",
+                                                                            filled:
+                                                                                true,
+                                                                            floatingLabelBehavior:
+                                                                                FloatingLabelBehavior.auto,
+                                                                            contentPadding:
+                                                                                EdgeInsets.all(16),
+                                                                            prefixIcon:
+                                                                                Icon(
+                                                                              Ionicons.pricetags_outline,
+                                                                              color: Colors.black,
+                                                                              size: 18,
+                                                                            ),
+                                                                            focusedBorder:
+                                                                                OutlineInputBorder(
+                                                                              borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                                                            ),
+                                                                            enabledBorder:
+                                                                                OutlineInputBorder(
+                                                                              borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                                                                            ),
                                                                           ),
                                                                         ),
-                                                                      ),
-                                                                      DesignButtons.icon(
-                                                                        onPressed: () async {
-                                                                          final DocumentReference ref =
-                                                                              _db.collection('alltournaments').doc(game.tId);
-                                                                          final DocumentSnapshot snap = await ref.get();
-                                                                          final List functionplayerGameIDforAddGame = snap['joinedPlayers'].map((e) {
-                                                                            return e['playerGameID'];
-                                                                          }).toList();
-                                                                          if (!functionplayerGameIDforAddGame.contains(_addMoney.text)) {
-                                                                            debugPrint(functionplayerGameID.toList().toString());
+                                                                        const SizedBox(
+                                                                            height:
+                                                                                6),
+                                                                        Visibility(
+                                                                          visible: userData
+                                                                              .referee
+                                                                              .isEmpty,
+                                                                          child:
+                                                                              Column(
+                                                                            children: [
+                                                                              DesignText.bold2(
+                                                                                'Person who referred you (optional)',
+                                                                                fontWeight: 700,
+                                                                                fontSize: 14,
+                                                                                color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                                                              ),
+                                                                              const SizedBox(height: 6),
+                                                                              TextField(
+                                                                                textCapitalization: TextCapitalization.sentences,
+                                                                                controller: _refereeController,
+                                                                                keyboardType: TextInputType.text,
+                                                                                decoration: const InputDecoration(
+                                                                                  labelText: "Username of referee - Case sensitive",
+                                                                                  filled: true,
+                                                                                  floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                                                                  contentPadding: EdgeInsets.all(16),
+                                                                                  prefixIcon: Icon(
+                                                                                    Ionicons.pricetags_outline,
+                                                                                    color: Colors.black,
+                                                                                    size: 18,
+                                                                                  ),
+                                                                                  focusedBorder: OutlineInputBorder(
+                                                                                    borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                                                                  ),
+                                                                                  enabledBorder: OutlineInputBorder(
+                                                                                    borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          height:
+                                                                              6.0,
+                                                                        ),
+                                                                        DesignButtons
+                                                                            .icon(
+                                                                          onPressed:
+                                                                              () async {
+                                                                            final DocumentReference
+                                                                                ref =
+                                                                                _db.collection('alltournaments').doc(game.tId);
+                                                                            final DocumentSnapshot
+                                                                                snap =
+                                                                                await ref.get();
+                                                                            final List
+                                                                                functionplayerGameIDforAddGame =
+                                                                                snap['joinedPlayers'].map((e) {
+                                                                              return e['playerGameID'];
+                                                                            }).toList();
+                                                                            if (!functionplayerGameIDforAddGame.contains(_addMoney.text)) {
+                                                                              debugPrint(functionplayerGameID.toList().toString());
 
-                                                                            if (userData.coins - game.fee <= -1) {
-                                                                              Fluttertoast.showToast(
-                                                                                  msg: "Not enough money in your wallet",
-                                                                                  toastLength: Toast.LENGTH_LONG);
+                                                                              if (userData.coins - game.fee <= -1) {
+                                                                                Fluttertoast.showToast(msg: "Not enough money in your wallet", toastLength: Toast.LENGTH_LONG);
+                                                                              } else if (_addMoney.text.isEmpty) {
+                                                                                Fluttertoast.showToast(msg: "Careful! Enter your username", toastLength: Toast.LENGTH_LONG);
+                                                                              } else if (userData.name == _refereeController.text) {
+                                                                                Fluttertoast.showToast(msg: "Oops, you can't refer yourself", toastLength: Toast.LENGTH_LONG);
+                                                                              } else {
+                                                                                await FirestoreService()
+                                                                                    .updateJoining(game, _addMoney.text)
+                                                                                    .whenComplete(() => FirestoreService().updateWallet(-game.fee, 'Join Match no: ${game.id}', DateTime.now().toString(), '', '', '', true))
+                                                                                    .whenComplete(() {
+                                                                                      if (_refereeController.text.isNotEmpty) {
+                                                                                        FirestoreService().payReferee((game.fee / 5).round(), _refereeController.text);
+                                                                                      }
+                                                                                    })
+                                                                                    .whenComplete(() => Navigator.pop(context))
+                                                                                    .whenComplete(() => Fluttertoast.showToast(msg: "SUCCESS", toastLength: Toast.LENGTH_LONG));
+                                                                              }
                                                                             } else {
-                                                                              await FirestoreService()
-                                                                                  .updateJoining(game, _addMoney.text)
-                                                                                  .whenComplete(() => FirestoreService().updateWallet(
-                                                                                      -game.fee,
-                                                                                      'Join Match no: ${game.id}',
-                                                                                      DateTime.now().toString(),
-                                                                                      '',
-                                                                                      '',
-                                                                                      '',
-                                                                                      true))
-                                                                                  .whenComplete(() => FirestoreService()
-                                                                                      .payReferee((game.fee / 5).round(), userData.referee))
-                                                                                  .whenComplete(() => Navigator.pop(context))
-                                                                                  .whenComplete(() => Fluttertoast.showToast(
-                                                                                      msg: "SUCCESS", toastLength: Toast.LENGTH_LONG));
+                                                                              Fluttertoast.showToast(msg: "${_addMoney.text} Already Added", toastLength: Toast.LENGTH_SHORT);
+                                                                              debugPrint('$functionplayerGameID Already Joined');
                                                                             }
-                                                                          } else {
-                                                                            Fluttertoast.showToast(
-                                                                                msg: "${_addMoney.text} Already Added",
-                                                                                toastLength: Toast.LENGTH_SHORT);
-                                                                            debugPrint('$functionplayerGameID Already Joined');
-                                                                          }
-                                                                        },
-                                                                        textLabel: 'Join ',
-                                                                        colorText: darkModeProvider.isDarkTheme ? Colors.white : null,
-                                                                        icon: const Icon(Ionicons.add_circle_outline),
-                                                                      )
-                                                                    ],
+                                                                          },
+                                                                          textLabel:
+                                                                              'Join ',
+                                                                          colorText: darkModeProvider.isDarkTheme
+                                                                              ? Colors.white
+                                                                              : null,
+                                                                          icon:
+                                                                              const Icon(Ionicons.add_circle_outline),
+                                                                        )
+                                                                      ],
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ),
                                                             );
                                                           })
-                                                  : Fluttertoast.showToast(msg: "Already Added", toastLength: Toast.LENGTH_SHORT);
+                                                  : Fluttertoast.showToast(
+                                                      msg:
+                                                          "You already joined!",
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT);
                                             }
                                           },
-                                          textLabel: tournamentsStream.status == 'completed'
+                                          textLabel: tournamentsStream.status ==
+                                                  'completed'
                                               ? 'Results'
                                               : !checkJoined
                                                   ? checkMaxPlayers
                                                       ? 'Tournament Full'
                                                       : 'Join Now'
-                                                  : tournamentsStream.status == 'ongoing'
+                                                  : tournamentsStream.status ==
+                                                          'ongoing'
                                                       ? 'Play Now'
                                                       : 'Already Joined',
                                           colorText: Colors.white,
                                           icon: Icon(
-                                            !checkJoined ? Ionicons.play_circle_outline : Ionicons.play_circle_sharp,
+                                            !checkJoined
+                                                ? Ionicons.play_circle_outline
+                                                : Ionicons.play_circle_sharp,
                                             color: Colors.white,
                                             size: 18,
                                           )),

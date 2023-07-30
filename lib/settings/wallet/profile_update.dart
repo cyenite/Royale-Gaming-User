@@ -18,7 +18,8 @@ class ProfileUpdate extends StatefulWidget {
   _ProfileUpdateState createState() => _ProfileUpdateState();
 }
 
-class _ProfileUpdateState extends State<ProfileUpdate> with WidgetsBindingObserver {
+class _ProfileUpdateState extends State<ProfileUpdate>
+    with WidgetsBindingObserver {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   bool loading = false;
   final TextEditingController _userName = TextEditingController();
@@ -49,7 +50,8 @@ class _ProfileUpdateState extends State<ProfileUpdate> with WidgetsBindingObserv
 
   @override
   Widget build(BuildContext context) {
-    final DarkModeProvider darkModeProvider = Provider.of<DarkModeProvider>(context);
+    final DarkModeProvider darkModeProvider =
+        Provider.of<DarkModeProvider>(context);
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -93,7 +95,8 @@ class _ProfileUpdateState extends State<ProfileUpdate> with WidgetsBindingObserv
         body: Padding(
           padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
           child: ListView(
-            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics()),
             primary: false,
             children: [
               const SizedBox(height: 6),
@@ -250,22 +253,27 @@ class _ProfileUpdateState extends State<ProfileUpdate> with WidgetsBindingObserv
   }
 
   void _uploadFirestore() async {
-    if (_userName.text.isEmpty || _userName.text.isEmpty || _userName.text.isEmpty) {
+    if (_userName.text.isEmpty ||
+        _userName.text.isEmpty ||
+        _userName.text.isEmpty) {
       return formSnackbar();
     } else {
       setState(() {
         loading = true;
       });
 
-      final usernameData = _db.collection('usersdata').where('name', isEqualTo: _userName.text).get();
+      final usernameData = _db
+          .collection('usersdata')
+          .where('name', isEqualTo: _userName.text)
+          .get();
 
       usernameData.then((value) async {
         if (value.docs.isEmpty) {
           final User user = AuthService().user!;
-          _db
-              .collection('usersdata')
-              .doc(user.uid)
-              .set({'name': _userName.text, 'profile': _profile.text}, SetOptions(merge: true)).whenComplete(() => Navigator.pop(context));
+          _db.collection('usersdata').doc(user.uid).set(
+              {'name': _userName.text, 'profile': _profile.text},
+              SetOptions(
+                  merge: true)).whenComplete(() => Navigator.pop(context));
           await Future.delayed(const Duration(milliseconds: 1000));
           setState(() {
             loading = false;

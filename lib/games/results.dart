@@ -41,7 +41,8 @@ class _TournamentResultsState extends State<TournamentResults> {
 
   @override
   Widget build(BuildContext context) {
-    final DarkModeProvider darkModeProvider = Provider.of<DarkModeProvider>(context);
+    final DarkModeProvider darkModeProvider =
+        Provider.of<DarkModeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         // backgroundColor: Colors.blueAccent,
@@ -65,7 +66,8 @@ class _TournamentResultsState extends State<TournamentResults> {
               } else if (snapshot.hasData) {
                 final List<Tournaments> getResults = snapshot.data!;
                 return ListView(
-                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                  physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics()),
                   primary: false,
                   children: [
                     Column(
@@ -81,7 +83,9 @@ class _TournamentResultsState extends State<TournamentResults> {
                                     DesignText(
                                       'Winner',
                                       fontSize: 22,
-                                      color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                      color: darkModeProvider.isDarkTheme
+                                          ? Colors.white
+                                          : null,
                                     ),
                                     const Divider(),
                                     DataTable(
@@ -89,52 +93,75 @@ class _TournamentResultsState extends State<TournamentResults> {
                                         DataColumn(
                                           label: DesignText(
                                             'Players Name',
-                                            color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                            color: darkModeProvider.isDarkTheme
+                                                ? Colors.white
+                                                : null,
                                           ),
                                         ),
                                         DataColumn(
                                           label: DesignText(
                                             'Kills',
-                                            color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                            color: darkModeProvider.isDarkTheme
+                                                ? Colors.white
+                                                : null,
                                           ),
                                         ),
                                         DataColumn(
                                           label: DesignText(
                                             'Rewards',
-                                            color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                            color: darkModeProvider.isDarkTheme
+                                                ? Colors.white
+                                                : null,
                                           ),
                                         )
                                       ],
                                       rows: results.playerResults
                                           .where((e) => e.winner)
-                                          .map((playerResults) => DataRow(cells: [
+                                          .map((playerResults) =>
+                                              DataRow(cells: [
                                                 DataCell(
                                                   Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
                                                       Expanded(
-                                                          child: DesignText.bold1(
-                                                        playerResults.playerGameID,
-                                                        color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                                          child:
+                                                              DesignText.bold1(
+                                                        playerResults
+                                                            .playerGameID,
+                                                        color: darkModeProvider
+                                                                .isDarkTheme
+                                                            ? Colors.white
+                                                            : null,
                                                       )),
                                                       const SizedBox(
                                                         height: 20,
-                                                        child: VerticalDivider(),
+                                                        child:
+                                                            VerticalDivider(),
                                                       )
                                                     ],
                                                   ),
                                                 ),
                                                 DataCell(
                                                   Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
                                                       DesignText.bold2(
-                                                        playerResults.playerSingleRewards.toString(),
-                                                        color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                                        playerResults
+                                                            .playerSingleRewards
+                                                            .toString(),
+                                                        color: darkModeProvider
+                                                                .isDarkTheme
+                                                            ? Colors.white
+                                                            : null,
                                                       ),
                                                       const SizedBox(
                                                         height: 20,
-                                                        child: VerticalDivider(),
+                                                        child:
+                                                            VerticalDivider(),
                                                       )
                                                     ],
                                                   ),
@@ -142,7 +169,10 @@ class _TournamentResultsState extends State<TournamentResults> {
                                                 DataCell(
                                                   DesignText.bold2(
                                                     'KES ${playerResults.playerTotalCoins}',
-                                                    color: darkModeProvider.isDarkTheme ? Colors.greenAccent : null,
+                                                    color: darkModeProvider
+                                                            .isDarkTheme
+                                                        ? Colors.greenAccent
+                                                        : null,
                                                   ),
                                                 ),
                                               ]))
@@ -157,14 +187,17 @@ class _TournamentResultsState extends State<TournamentResults> {
                                   DesignText(
                                     'All Rewarded Players',
                                     fontSize: 22,
-                                    color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                    color: darkModeProvider.isDarkTheme
+                                        ? Colors.white
+                                        : null,
                                   ),
                                   const Divider()
                                 ])),
                             Stack(
                               children: [
                                 Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   children: [
                                     Card(
                                       clipBehavior: Clip.antiAlias,
@@ -174,53 +207,79 @@ class _TournamentResultsState extends State<TournamentResults> {
                                           DataColumn(
                                             label: DesignText(
                                               'Players Name',
-                                              color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                              color:
+                                                  darkModeProvider.isDarkTheme
+                                                      ? Colors.white
+                                                      : null,
                                             ),
                                           ),
                                           DataColumn(
                                             label: DesignText(
                                               'Kills',
-                                              color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                              color:
+                                                  darkModeProvider.isDarkTheme
+                                                      ? Colors.white
+                                                      : null,
                                             ),
                                           ),
                                           DataColumn(
                                             label: DesignText(
                                               'Rewards',
-                                              color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                              color:
+                                                  darkModeProvider.isDarkTheme
+                                                      ? Colors.white
+                                                      : null,
                                             ),
                                           )
                                         ],
                                         rows: widget.tournaments.playerResults
                                             .where((e) => !e.winner)
-                                            .map((playerResults) => DataRow(cells: [
+                                            .map((playerResults) =>
+                                                DataRow(cells: [
                                                   DataCell(
                                                     Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
                                                       children: [
                                                         Expanded(
-                                                          child: DesignText.bold1(
-                                                            playerResults.playerGameID,
-                                                            color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                                          child:
+                                                              DesignText.bold1(
+                                                            playerResults
+                                                                .playerGameID,
+                                                            color: darkModeProvider
+                                                                    .isDarkTheme
+                                                                ? Colors.white
+                                                                : null,
                                                           ),
                                                         ),
                                                         const SizedBox(
                                                           height: 20,
-                                                          child: VerticalDivider(),
+                                                          child:
+                                                              VerticalDivider(),
                                                         )
                                                       ],
                                                     ),
                                                   ),
                                                   DataCell(
                                                     Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
                                                       children: [
                                                         DesignText.bold2(
-                                                          playerResults.playerSingleRewards.toString(),
-                                                          color: darkModeProvider.isDarkTheme ? Colors.white : null,
+                                                          playerResults
+                                                              .playerSingleRewards
+                                                              .toString(),
+                                                          color: darkModeProvider
+                                                                  .isDarkTheme
+                                                              ? Colors.white
+                                                              : null,
                                                         ),
                                                         const SizedBox(
                                                           height: 20,
-                                                          child: VerticalDivider(),
+                                                          child:
+                                                              VerticalDivider(),
                                                         )
                                                       ],
                                                     ),
@@ -228,7 +287,10 @@ class _TournamentResultsState extends State<TournamentResults> {
                                                   DataCell(
                                                     DesignText.bold2(
                                                       'KES ${playerResults.playerTotalCoins}',
-                                                      color: darkModeProvider.isDarkTheme ? Colors.greenAccent : Colors.green,
+                                                      color: darkModeProvider
+                                                              .isDarkTheme
+                                                          ? Colors.greenAccent
+                                                          : Colors.green,
                                                     ),
                                                   ),
                                                 ]))

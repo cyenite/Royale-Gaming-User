@@ -26,7 +26,7 @@ class AboutScreen extends StatelessWidget {
             // },
             onPressed: () {},
             child: const Text('This app is under dev.')),
-      ), 
+      ),
     );
   }
 }

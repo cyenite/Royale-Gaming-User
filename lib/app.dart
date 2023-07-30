@@ -36,17 +36,24 @@ class _AppState extends State<App> {
                   CountryLocalizations.delegate,
                 ],
                 routes: appRoutes,
-                themeMode: themeProvider.isDarkTheme ? ThemeMode.dark : ThemeMode.light,
+                themeMode: themeProvider.isDarkTheme
+                    ? ThemeMode.dark
+                    : ThemeMode.light,
                 darkTheme: ThemeData(
                   brightness: Brightness.dark,
                   scaffoldBackgroundColor: DesignColor.blackBackground,
                   cardColor: DesignColor.blackFront,
-                  dialogTheme: const DialogTheme(backgroundColor: DesignColor.blackFront),
-                  appBarTheme: const AppBarTheme(backgroundColor: DesignColor.blackFront),
-                  bottomSheetTheme: const BottomSheetThemeData(backgroundColor: DesignColor.blackFront),
+                  dialogTheme: const DialogTheme(
+                      backgroundColor: DesignColor.blackFront),
+                  appBarTheme: const AppBarTheme(
+                      backgroundColor: DesignColor.blackFront),
+                  bottomSheetTheme: const BottomSheetThemeData(
+                      backgroundColor: DesignColor.blackFront),
                 ),
                 theme: ThemeData(
-                  appBarTheme: const AppBarTheme(backgroundColor: Colors.white, iconTheme: IconThemeData(color: Colors.black)),
+                  appBarTheme: const AppBarTheme(
+                      backgroundColor: Colors.white,
+                      iconTheme: IconThemeData(color: Colors.black)),
                 ),
               );
             }),

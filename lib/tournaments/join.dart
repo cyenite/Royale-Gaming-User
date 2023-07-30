@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, depend_on_referenced_packages
 
 import 'package:app_tournament/config/app_information.dart';
 import 'package:app_tournament/games/results.dart';
@@ -41,7 +41,8 @@ class JoinDetails extends StatelessWidget {
         // backgroundColor: Colors.blueAccent,
       ),
       body: StreamProvider(
-          create: (context) => FirestoreService().streamAlltournaments(tournamentsView.tId),
+          create: (context) =>
+              FirestoreService().streamAlltournaments(tournamentsView.tId),
           catchError: (context, error) => Tournaments(),
           initialData: Tournaments(),
           child: StartPage(
@@ -75,7 +76,8 @@ class _StartPageState extends State<StartPage> {
     Navigator.of(context).push(
       MaterialPageRoute(
         fullscreenDialog: true,
-        builder: (BuildContext context) => TournamentResults(tournaments: widget.tournamentsView),
+        builder: (BuildContext context) =>
+            TournamentResults(tournaments: widget.tournamentsView),
       ),
     );
     setState(() {
@@ -90,10 +92,14 @@ class _StartPageState extends State<StartPage> {
     final List uidContains = tournamentsStream.joinedPlayers.map((e) {
       return e.uid;
     }).toList();
-    final String timeConvert = DateFormat.yMMMd().add_jm().format(DateTime.parse(tournamentsStream.gamePlayTime));
+    final String timeConvert = DateFormat.yMMMd()
+        .add_jm()
+        .format(DateTime.parse(tournamentsStream.gamePlayTime));
     var userData = Provider.of<UserData>(context);
     final bool checkJoined = uidContains.contains(user.uid);
-    final bool checkMaxPlayers = tournamentsStream.joinedPlayersCount >= tournamentsStream.maxPlayers && !checkJoined;
+    final bool checkMaxPlayers =
+        tournamentsStream.joinedPlayersCount >= tournamentsStream.maxPlayers &&
+            !checkJoined;
     final TextEditingController _addMoney = TextEditingController();
     return Hero(
       tag: widget.tournamentsView.image,
@@ -126,7 +132,9 @@ class _StartPageState extends State<StartPage> {
                           DesignText(
                             'Room Code and Password',
                             fontSize: 16,
-                            color: widget.darkModeProvider.isDarkTheme ? Colors.white : DesignColor.blueSmart,
+                            color: widget.darkModeProvider.isDarkTheme
+                                ? Colors.white
+                                : DesignColor.blueSmart,
                           ),
                           Container(
                             alignment: Alignment.topLeft,
@@ -136,11 +144,19 @@ class _StartPageState extends State<StartPage> {
                                 Expanded(
                                   child: DesignButtons.icon(
                                       onPressed: () {
-                                        FlutterClipboard.copy(tournamentsStream.roomId)
-                                            .then((value) => Fluttertoast.showToast(msg: "Copy Successful", toastLength: Toast.LENGTH_LONG));
+                                        FlutterClipboard.copy(
+                                                tournamentsStream.roomId)
+                                            .then((value) =>
+                                                Fluttertoast.showToast(
+                                                    msg: "Copy Successful",
+                                                    toastLength:
+                                                        Toast.LENGTH_LONG));
                                       },
                                       textLabel: tournamentsStream.roomId,
-                                      colorText: widget.darkModeProvider.isDarkTheme ? Colors.white : null,
+                                      colorText:
+                                          widget.darkModeProvider.isDarkTheme
+                                              ? Colors.white
+                                              : null,
                                       icon: const Icon(
                                         Ionicons.id_card_outline,
                                         size: 18,
@@ -150,11 +166,19 @@ class _StartPageState extends State<StartPage> {
                                 Expanded(
                                   child: DesignButtons.icon(
                                       onPressed: () {
-                                        FlutterClipboard.copy(tournamentsStream.roomPassword)
-                                            .then((value) => Fluttertoast.showToast(msg: "Copy Successful", toastLength: Toast.LENGTH_LONG));
+                                        FlutterClipboard.copy(
+                                                tournamentsStream.roomPassword)
+                                            .then((value) =>
+                                                Fluttertoast.showToast(
+                                                    msg: "Copy Successful",
+                                                    toastLength:
+                                                        Toast.LENGTH_LONG));
                                       },
                                       textLabel: tournamentsStream.roomPassword,
-                                      colorText: widget.darkModeProvider.isDarkTheme ? Colors.white : null,
+                                      colorText:
+                                          widget.darkModeProvider.isDarkTheme
+                                              ? Colors.white
+                                              : null,
                                       icon: const Icon(
                                         Ionicons.lock_open_outline,
                                         size: 18,
@@ -166,7 +190,9 @@ class _StartPageState extends State<StartPage> {
                           DesignText.bold2(
                             'Click to copy',
                             fontWeight: 700,
-                            color: widget.darkModeProvider.isDarkTheme ? Colors.white : null,
+                            color: widget.darkModeProvider.isDarkTheme
+                                ? Colors.white
+                                : null,
                           ),
                           // DesignButtons.icon(
                           //     elevated: true,
@@ -200,7 +226,10 @@ class _StartPageState extends State<StartPage> {
                                 child: DesignButtons.icon(
                                     onPressed: () {},
                                     textLabel: widget.tournamentsView.teamType,
-                                    colorText: widget.darkModeProvider.isDarkTheme ? Colors.white : null,
+                                    colorText:
+                                        widget.darkModeProvider.isDarkTheme
+                                            ? Colors.white
+                                            : null,
                                     icon: const Icon(
                                       Ionicons.game_controller_outline,
                                       size: 18,
@@ -211,7 +240,9 @@ class _StartPageState extends State<StartPage> {
                                 child: DesignButtons.icon(
                                   onPressed: () {},
                                   textLabel: widget.tournamentsView.mapType,
-                                  colorText: widget.darkModeProvider.isDarkTheme ? Colors.white : null,
+                                  colorText: widget.darkModeProvider.isDarkTheme
+                                      ? Colors.white
+                                      : null,
                                   icon: const Icon(
                                     Ionicons.map_outline,
                                     size: 18,
@@ -222,8 +253,12 @@ class _StartPageState extends State<StartPage> {
                               Expanded(
                                 child: DesignButtons.icon(
                                   onPressed: () {},
-                                  textLabel: widget.tournamentsView.fee == 0 ? 'Free' : 'Paid',
-                                  colorText: widget.darkModeProvider.isDarkTheme ? Colors.white : null,
+                                  textLabel: widget.tournamentsView.fee == 0
+                                      ? 'Free'
+                                      : 'Paid',
+                                  colorText: widget.darkModeProvider.isDarkTheme
+                                      ? Colors.white
+                                      : null,
                                   icon: const Icon(
                                     Ionicons.wallet_outline,
                                     size: 18,
@@ -235,7 +270,9 @@ class _StartPageState extends State<StartPage> {
                           DesignButtons.icon(
                             onPressed: () {},
                             textLabel: timeConvert,
-                            colorText: widget.darkModeProvider.isDarkTheme ? Colors.white : null,
+                            colorText: widget.darkModeProvider.isDarkTheme
+                                ? Colors.white
+                                : null,
                             icon: const Icon(
                               Ionicons.time_outline,
                               size: 18,
@@ -243,8 +280,11 @@ class _StartPageState extends State<StartPage> {
                           ),
                           DesignButtons.icon(
                             onPressed: () {},
-                            textLabel: 'Joining fee: Ksh.${widget.tournamentsView.fee}',
-                            colorText: widget.darkModeProvider.isDarkTheme ? Colors.white : null,
+                            textLabel:
+                                'Joining fee: Ksh.${widget.tournamentsView.fee}',
+                            colorText: widget.darkModeProvider.isDarkTheme
+                                ? Colors.white
+                                : null,
                             icon: const Icon(
                               Ionicons.card_outline,
                               size: 18,
@@ -268,7 +308,9 @@ class _StartPageState extends State<StartPage> {
                           ),
                           DesignText.bold2(
                             AppInformation.instructionText,
-                            color: widget.darkModeProvider.isDarkTheme ? Colors.white : null,
+                            color: widget.darkModeProvider.isDarkTheme
+                                ? Colors.white
+                                : null,
                             fontSize: 14,
                             fontWeight: 500,
                             textAlign: TextAlign.justify,
@@ -283,7 +325,9 @@ class _StartPageState extends State<StartPage> {
                           ),
                           DesignText.bold2(
                             widget.tournamentsView.aboutTournament,
-                            color: widget.darkModeProvider.isDarkTheme ? Colors.white : null,
+                            color: widget.darkModeProvider.isDarkTheme
+                                ? Colors.white
+                                : null,
                             fontSize: 14,
                             fontWeight: 500,
                             textAlign: TextAlign.justify,
@@ -344,61 +388,94 @@ class _StartPageState extends State<StartPage> {
                       )
                     : DesignButtons.customRadius(
                         elevated: true,
-                        color: !checkJoined || tournamentsStream.status == 'completed' ? DesignColor.blueSmart : Colors.pinkAccent,
+                        color: !checkJoined ||
+                                tournamentsStream.status == 'completed'
+                            ? DesignColor.blueSmart
+                            : Colors.pinkAccent,
                         onPressed: () async {
                           if (tournamentsStream.status == 'ongoing') {
                             if (checkJoined) {
                               await FlutterWebBrowser.openWebPage(
                                 url: tournamentsStream.link,
                                 customTabsOptions: CustomTabsOptions(
-                                  colorScheme: widget.darkModeProvider.isDarkTheme ? CustomTabsColorScheme.dark : CustomTabsColorScheme.light,
-                                  toolbarColor: widget.darkModeProvider.isDarkTheme ? DesignColor.blackFront : Colors.white,
+                                  colorScheme:
+                                      widget.darkModeProvider.isDarkTheme
+                                          ? CustomTabsColorScheme.dark
+                                          : CustomTabsColorScheme.light,
+                                  toolbarColor:
+                                      widget.darkModeProvider.isDarkTheme
+                                          ? DesignColor.blackFront
+                                          : Colors.white,
                                   shareState: CustomTabsShareState.off,
                                   instantAppsEnabled: false,
                                   showTitle: true,
                                   urlBarHidingEnabled: true,
                                 ),
-                                safariVCOptions: const SafariViewControllerOptions(
+                                safariVCOptions:
+                                    const SafariViewControllerOptions(
                                   barCollapsingEnabled: true,
-                                  dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
-                                  modalPresentationCapturesStatusBarAppearance: true,
+                                  dismissButtonStyle:
+                                      SafariViewControllerDismissButtonStyle
+                                          .close,
+                                  modalPresentationCapturesStatusBarAppearance:
+                                      true,
                                 ),
                               );
                             } else if (tournamentsStream.streamLink != '') {
                               if (kDebugMode) {
-                                print('spectating... ${tournamentsStream.streamLink}');
+                                print(
+                                    'spectating... ${tournamentsStream.streamLink}');
                               }
                               await FlutterWebBrowser.openWebPage(
                                 url: tournamentsStream.streamLink,
                                 customTabsOptions: CustomTabsOptions(
-                                  colorScheme: widget.darkModeProvider.isDarkTheme ? CustomTabsColorScheme.dark : CustomTabsColorScheme.light,
-                                  toolbarColor: widget.darkModeProvider.isDarkTheme ? DesignColor.blackAppbar : Colors.white,
+                                  colorScheme:
+                                      widget.darkModeProvider.isDarkTheme
+                                          ? CustomTabsColorScheme.dark
+                                          : CustomTabsColorScheme.light,
+                                  toolbarColor:
+                                      widget.darkModeProvider.isDarkTheme
+                                          ? DesignColor.blackAppbar
+                                          : Colors.white,
                                   shareState: CustomTabsShareState.off,
                                   instantAppsEnabled: false,
                                   showTitle: true,
                                   urlBarHidingEnabled: true,
                                 ),
-                                safariVCOptions: const SafariViewControllerOptions(
+                                safariVCOptions:
+                                    const SafariViewControllerOptions(
                                   barCollapsingEnabled: true,
-                                  dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
-                                  modalPresentationCapturesStatusBarAppearance: true,
+                                  dismissButtonStyle:
+                                      SafariViewControllerDismissButtonStyle
+                                          .close,
+                                  modalPresentationCapturesStatusBarAppearance:
+                                      true,
                                 ),
                               );
                             }
                           } else {
-                            final FirebaseFirestore _db = FirebaseFirestore.instance;
-                            final DocumentReference ref1 = _db.collection('alltournaments').doc(widget.tournamentsView.tId);
+                            final FirebaseFirestore _db =
+                                FirebaseFirestore.instance;
+                            final DocumentReference ref1 = _db
+                                .collection('alltournaments')
+                                .doc(widget.tournamentsView.tId);
                             final DocumentSnapshot snapShots = await ref1.get();
-                            final List functionplayerGameID = snapShots['joinedPlayers'].map((e) {
+                            final List functionplayerGameID =
+                                snapShots['joinedPlayers'].map((e) {
                               return e['playerGameID'];
                             }).toList();
-                            final List functionuidContains = snapShots['joinedPlayers'].map((e) {
+                            final List functionuidContains =
+                                snapShots['joinedPlayers'].map((e) {
                               return e['uid'];
                             }).toList();
-                            final bool functioncheckJoined = functionuidContains.contains(user.uid);
+                            final bool functioncheckJoined =
+                                functionuidContains.contains(user.uid);
                             final bool functioncheckMaxPlayers =
-                                snapShots['joinedPlayersCount'] >= widget.tournamentsView.maxPlayers && !functioncheckJoined;
-                            if (!functionplayerGameID.contains(_addMoney.text)) {
+                                snapShots['joinedPlayersCount'] >=
+                                        widget.tournamentsView.maxPlayers &&
+                                    !functioncheckJoined;
+                            if (!functionplayerGameID
+                                .contains(_addMoney.text)) {
                               debugPrint(functionplayerGameID.toString());
                             } else {
                               debugPrint('$functionplayerGameID no else');
@@ -407,85 +484,175 @@ class _StartPageState extends State<StartPage> {
                                 ? anianimateProgress()
                                 : !functioncheckJoined
                                     ? functioncheckMaxPlayers
-                                        ? Fluttertoast.showToast(msg: "Tournament Full", toastLength: Toast.LENGTH_SHORT)
+                                        ? Fluttertoast.showToast(
+                                            msg: "Tournament Full",
+                                            toastLength: Toast.LENGTH_SHORT)
                                         : showModalBottomSheet(
-                                            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(6))),
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                        top: Radius.circular(
+                                                            6))),
                                             context: context,
                                             builder: (BuildContext context) {
                                               return Padding(
-                                                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                                padding: EdgeInsets.only(
+                                                    bottom:
+                                                        MediaQuery.of(context)
+                                                            .viewInsets
+                                                            .bottom),
                                                 child: SizedBox(
                                                   height: 160,
                                                   child: Padding(
-                                                    padding: const EdgeInsets.all(8.0),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
                                                     child: Column(
                                                       children: [
                                                         DesignText.bold2(
                                                           'Add Your GamePlay Username',
                                                           fontWeight: 700,
                                                           fontSize: 14,
-                                                          color: widget.darkModeProvider.isDarkTheme ? Colors.white : null,
+                                                          color: widget
+                                                                  .darkModeProvider
+                                                                  .isDarkTheme
+                                                              ? Colors.white
+                                                              : null,
                                                         ),
-                                                        const SizedBox(height: 6),
+                                                        const SizedBox(
+                                                            height: 6),
                                                         TextField(
-                                                          textCapitalization: TextCapitalization.sentences,
+                                                          textCapitalization:
+                                                              TextCapitalization
+                                                                  .sentences,
                                                           controller: _addMoney,
-                                                          keyboardType: TextInputType.text,
-                                                          decoration: const InputDecoration(
-                                                            labelText: "Your game username",
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .text,
+                                                          decoration:
+                                                              const InputDecoration(
+                                                            labelText:
+                                                                "Your game username",
                                                             filled: true,
-                                                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                                            contentPadding: EdgeInsets.all(16),
+                                                            floatingLabelBehavior:
+                                                                FloatingLabelBehavior
+                                                                    .auto,
+                                                            contentPadding:
+                                                                EdgeInsets.all(
+                                                                    16),
                                                             prefixIcon: Icon(
-                                                              Ionicons.pricetags_outline,
-                                                              color: Colors.black,
+                                                              Ionicons
+                                                                  .pricetags_outline,
+                                                              color:
+                                                                  Colors.black,
                                                               size: 18,
                                                             ),
-                                                            focusedBorder: OutlineInputBorder(
-                                                              borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                                            focusedBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                      color:
+                                                                          Colors
+                                                                              .blue,
+                                                                      width:
+                                                                          2.0),
                                                             ),
-                                                            enabledBorder: OutlineInputBorder(
-                                                              borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                                                            enabledBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide:
+                                                                  BorderSide(
+                                                                      color:
+                                                                          Colors
+                                                                              .blue,
+                                                                      width:
+                                                                          1.0),
                                                             ),
                                                           ),
                                                         ),
                                                         DesignButtons.icon(
                                                           onPressed: () async {
-                                                            final DocumentReference ref =
-                                                                _db.collection('alltournaments').doc(widget.tournamentsView.tId);
-                                                            final DocumentSnapshot snap = await ref.get();
-                                                            final List functionplayerGameIDforAddGame = snap['joinedPlayers'].map((e) {
-                                                              return e['playerGameID'];
+                                                            final DocumentReference
+                                                                ref = _db
+                                                                    .collection(
+                                                                        'alltournaments')
+                                                                    .doc(widget
+                                                                        .tournamentsView
+                                                                        .tId);
+                                                            final DocumentSnapshot
+                                                                snap =
+                                                                await ref.get();
+                                                            final List
+                                                                functionplayerGameIDforAddGame =
+                                                                snap['joinedPlayers']
+                                                                    .map((e) {
+                                                              return e[
+                                                                  'playerGameID'];
                                                             }).toList();
-                                                            if (!functionplayerGameIDforAddGame.contains(_addMoney.text)) {
-                                                              debugPrint(functionplayerGameID.toList().toString());
+                                                            if (!functionplayerGameIDforAddGame
+                                                                .contains(
+                                                                    _addMoney
+                                                                        .text)) {
+                                                              debugPrint(
+                                                                  functionplayerGameID
+                                                                      .toList()
+                                                                      .toString());
 
-                                                              if (userData.coins - widget.tournamentsView.fee <= -1) {
-                                                                Fluttertoast.showToast(msg: "Money Need to Add", toastLength: Toast.LENGTH_SHORT);
+                                                              if (userData.coins -
+                                                                      widget
+                                                                          .tournamentsView
+                                                                          .fee <=
+                                                                  -1) {
+                                                                Fluttertoast.showToast(
+                                                                    msg:
+                                                                        "Money Need to Add",
+                                                                    toastLength:
+                                                                        Toast
+                                                                            .LENGTH_SHORT);
                                                               } else {
                                                                 await FirestoreService()
-                                                                    .updateJoining(widget.tournamentsView, _addMoney.text)
+                                                                    .updateJoining(
+                                                                        widget
+                                                                            .tournamentsView,
+                                                                        _addMoney
+                                                                            .text)
                                                                     .whenComplete(() => FirestoreService().updateWallet(
-                                                                        -widget.tournamentsView.fee,
+                                                                        -widget
+                                                                            .tournamentsView
+                                                                            .fee,
                                                                         'Join Match no: ${widget.tournamentsView.id}',
-                                                                        DateTime.now().toString(),
+                                                                        DateTime.now()
+                                                                            .toString(),
                                                                         '',
                                                                         '',
                                                                         '',
                                                                         true))
-                                                                    .whenComplete(() => Navigator.pop(context))
-                                                                    .whenComplete(
-                                                                        () => Fluttertoast.showToast(msg: "SUCCESS", toastLength: Toast.LENGTH_LONG));
+                                                                    .whenComplete(() =>
+                                                                        Navigator.pop(
+                                                                            context))
+                                                                    .whenComplete(() => Fluttertoast.showToast(
+                                                                        msg:
+                                                                            "SUCCESS",
+                                                                        toastLength:
+                                                                            Toast.LENGTH_LONG));
                                                               }
                                                             } else {
                                                               Fluttertoast.showToast(
-                                                                  msg: "${_addMoney.text} Already Added", toastLength: Toast.LENGTH_SHORT);
-                                                              debugPrint('$functionplayerGameID Already Joined');
+                                                                  msg:
+                                                                      "${_addMoney.text} Already Added",
+                                                                  toastLength: Toast
+                                                                      .LENGTH_SHORT);
+                                                              debugPrint(
+                                                                  '$functionplayerGameID Already Joined');
                                                             }
                                                           },
                                                           textLabel: 'Join ',
-                                                          colorText: widget.darkModeProvider.isDarkTheme ? Colors.white : null,
-                                                          icon: const Icon(Ionicons.add_circle_outline),
+                                                          colorText: widget
+                                                                  .darkModeProvider
+                                                                  .isDarkTheme
+                                                              ? Colors.white
+                                                              : null,
+                                                          icon: const Icon(Ionicons
+                                                              .add_circle_outline),
                                                         )
                                                       ],
                                                     ),
@@ -493,7 +660,9 @@ class _StartPageState extends State<StartPage> {
                                                 ),
                                               );
                                             })
-                                    : Fluttertoast.showToast(msg: "Already Added", toastLength: Toast.LENGTH_SHORT);
+                                    : Fluttertoast.showToast(
+                                        msg: "Already Added",
+                                        toastLength: Toast.LENGTH_SHORT);
                           }
                         },
                         textLabel: tournamentsStream.status == 'completed'
@@ -513,7 +682,9 @@ class _StartPageState extends State<StartPage> {
                         bottomRight: 0,
                         topLeft: 0,
                         icon: Icon(
-                          !checkJoined ? Ionicons.play_circle_outline : Ionicons.play_circle_sharp,
+                          !checkJoined
+                              ? Ionicons.play_circle_outline
+                              : Ionicons.play_circle_sharp,
                           color: Colors.white,
                           size: 18,
                         )),

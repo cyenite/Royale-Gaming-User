@@ -136,7 +136,7 @@ class DesignContainer extends StatelessWidget {
       padding: padding ?? EdgeInsets.all(allPadding ?? 16),
       clipBehavior: clipBehavior ?? Clip.none,
       child: child,
-    ); 
+    );
     return container;
   }
 }
