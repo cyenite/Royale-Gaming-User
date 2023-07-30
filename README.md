@@ -1,4 +1,4 @@
-# Royale Gaming App
+# Royale Gaming User App
 
 **Royale Gaming App** is a premium Flutter application designed for both hosting and participating in battle royale gaming tournaments.
 
