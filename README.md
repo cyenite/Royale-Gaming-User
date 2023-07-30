@@ -1,25 +1,53 @@
-# Debug Keystore
-    keytool -list -v -alias royale -keystore Users/Ron/.android/debug.keystore android
- 
-# For Notification (Cloudflare) 
-    {
-     "message": "New game posted",
-     "title": "Yeahhhhhhhh!",
-      "topic": "/topics/pro",
-     "image": "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png"
-    }
+# Royale Gaming App
 
-# Hive Setup
-    hive_generator: ^1.1.2
-    hive_flutter: ^1.1.0
-    hive: ^2.0.5 
+**Royale Gaming App** is a premium Flutter application designed for both hosting and participating in battle royale gaming tournaments.
 
+## Table of Contents
 
-# Run Build Runner
-        flutter pub run build_runner build
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contribute](#contribute)
+- [License](#license)
+  
+## Features
 
-# 12 Hour Date Dormat
-        DateFormat.jm().format(DateTime.now())
+- **Host Tournaments:** Set up and manage your own battle royale gaming tournaments.
+- **Join Tournaments:** Browse available tournaments and join ones that catch your interest.
+- **Leaderboards:** Check your rankings and see how you stack up against other players.
+- **Real-time Notifications:** Get instant updates about tournament statuses, new events, and more.
+- **Earn-cash:** Earn cash from tournaments that offer monetary gains for participation.
+  
+## Installation
 
-# Flutter signingreport
-    gradle signingreport
+1. Clone the repository: 
+   ```bash
+   git clone https://github.com/cyenite/Royale-Gaming-User.git
+
+2. Navigate to the project directory:
+    ```bash
+    cd royale-gaming-app
+
+3. Install dependencies:
+    ```bash
+    flutter pub get
+
+4. Run the app:
+    ```bash
+    flutter run
+
+## Usage
+
+To start using Royale Gaming App, follow these steps:
+
+- Register or login to your account.
+- Browse available tournaments or host a new one.
+- Join tournaments and start competing!
+
+## Contribute
+
+Contributions, issues, and feature requests are welcome! Feel free to check issues page.
+
+## License
+
+Distributed under the **MIT License**. See **LICENSE** for more information.
